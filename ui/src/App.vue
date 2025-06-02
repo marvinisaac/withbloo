@@ -2,10 +2,14 @@
 </script>
 
 <template>
-    <h1>
-        With Bloo
-    </h1>
+    <div class="app-container">
+        <RouterView />
+    </div>
 </template>
 
-<style lang="css">
+<style lang="scss">
+.app-container {
+    min-height: 100vh;
+    width: 100%;
+}
 </style>
