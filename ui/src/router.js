@@ -5,10 +5,17 @@ const router = createRouter({
     routes: [
         {
             path: '/',
-            name: 'check-in',
-            component: () => import('./page/CheckIn.vue'),
+            name: 'share',
+            component: () => import('./page/Share.vue'),
             meta: {
-                title: 'Check In - With Bloo'
+                title: 'Share - With Bloo'
+            }
+        }, {
+            path: '/revisit',
+            name: 'revisit',
+            component: () => import('./page/Revisit.vue'),
+            meta: {
+                title: 'Revisit - With Bloo'
             }
         }
     ]

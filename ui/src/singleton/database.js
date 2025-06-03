@@ -2,7 +2,7 @@ import Dexie from 'dexie';
 
 const dexie = new Dexie('bloo');
 dexie.version(1).stores({
-    mood: '++id, createAt',
+    mood: '++id, createdAt',
 });
 
 const db = {
@@ -24,6 +24,19 @@ const db = {
         } catch (error) {
             console.error('Error getting data:', error);
             return null;
+        }
+    },
+    getRecent: async (limit = 10) => {
+        try {
+            return await dexie
+                .mood
+                .orderBy('createdAt')
+                .reverse()
+                .limit(limit)
+                .toArray();
+        } catch (error) {
+            console.error('Error getting recent data:', error);
+            return [];
         }
     },
 };

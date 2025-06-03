@@ -1,30 +1,19 @@
 <script setup>
     import { onMounted } from 'vue';
+    import {
+        dateFormatFull,
+        emotionsBasic,
+        emotionNothing
+    } from '@/constants';
     import db from '@/singleton/database';
 
-    const today = new Date();
-    const formattedDate = today.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            hourCycle: 'h12'
-        })
+    const formattedDate = (new Date())
+        .toLocaleDateString('en-US', dateFormatFull)
         .replaceAll(',', '');
 
-    const emotionsBasic = [
-        { emoji: '🤮', text: 'disgust' },
-        { emoji: '😠', text: 'anger' },
-        { emoji: '😁', text: 'joy' },
-        { emoji: '☹️', text: 'sadness' },
-        { emoji: '😨', text: 'fear' },
-        { emoji: '😲', text: 'surprise' },
-    ];
-
-    const handleCheckIn = (emotion) => {
+    const handleShare = (emotion) => {
         db.add({
-            date: today.toISOString(),
+            createdAt: (new Date()).toISOString(),
             emotion: emotion.text
         });
     };
@@ -36,17 +25,17 @@
 </script>
 
 <template>
-    <div class="container-check-in">
+    <div class="container-share">
         <p class="date-current">
             {{ formattedDate }}
         </p>
-        <p class="check-in-prompt">
+        <p class="share-prompt">
             What are you feeling right now?
         </p>
-        <div class="check-in-choices">
+        <div class="share-choices">
             <div class="choice-emotions">
                 <div class="choice"
-                    @click="handleCheckIn(emotion)"
+                    @click="handleShare(emotion)"
                     v-for="(emotion, index) in emotionsBasic"
                     :key="index"
                 >
@@ -55,17 +44,17 @@
                 </div>
             </div>
             <div class="choice-nothing"
-                @click="handleCheckIn({ text: 'nothing' })"
+                @click="handleShare(emotionNothing)"
             >
-                <span class="choice-emoji"> 🤔 </span>
-                <span class="choice-text"> Not sure </span>
+                <span class="choice-emoji"> {{ emotionNothing.emoji }} </span>
+                <span class="choice-text"> {{ emotionNothing.text }} </span>
             </div>
         </div>
     </div>
 </template>
 
 <style lang="scss">
-.container-check-in {
+.container-share {
     display: flex;
         flex-direction: column;
         justify-content: center;
@@ -75,10 +64,10 @@
     .date-current {
         font-size: 0.875rem;
     }
-    .check-in-prompt {
+    .share-prompt {
         font-size: 1.25rem;
     }
-    .check-in-choices {
+    .share-choices {
         display: flex;
             flex-direction: column;
             gap: 1rem;
