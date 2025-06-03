@@ -1,4 +1,7 @@
 <script setup>
+    import { onMounted } from 'vue';
+    import db from '@/singleton/database';
+
     const today = new Date();
     const formattedDate = today.toLocaleDateString('en-US', {
             year: 'numeric',
@@ -11,13 +14,25 @@
         .replaceAll(',', '');
 
     const emotionsBasic = [
-        { emoji: '🤮', text: 'Disgust' },
-        { emoji: '😠', text: 'Anger' },
-        { emoji: '😁', text: 'Joy' },
-        { emoji: '☹️', text: 'Sadness' },
-        { emoji: '😨', text: 'Fear' },
-        { emoji: '😲', text: 'Surprise' },
+        { emoji: '🤮', text: 'disgust' },
+        { emoji: '😠', text: 'anger' },
+        { emoji: '😁', text: 'joy' },
+        { emoji: '☹️', text: 'sadness' },
+        { emoji: '😨', text: 'fear' },
+        { emoji: '😲', text: 'surprise' },
     ];
+
+    const handleCheckIn = (emotion) => {
+        db.add({
+            date: today.toISOString(),
+            emotion: emotion.text
+        });
+    };
+
+    onMounted(async () => {
+        const all = await db.get();
+        console.log('Moods recorded:', all);
+    });
 </script>
 
 <template>
@@ -31,6 +46,7 @@
         <div class="check-in-choices">
             <div class="choice-emotions">
                 <div class="choice"
+                    @click="handleCheckIn(emotion)"
                     v-for="(emotion, index) in emotionsBasic"
                     :key="index"
                 >
@@ -38,7 +54,9 @@
                     <span class="choice-text"> {{ emotion.text }} </span>
                 </div>
             </div>
-            <div class="choice-nothing">
+            <div class="choice-nothing"
+                @click="handleCheckIn({ text: 'nothing' })"
+            >
                 <span class="choice-emoji"> 🤔 </span>
                 <span class="choice-text"> Not sure </span>
             </div>

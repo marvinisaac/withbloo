@@ -1,6 +1,3 @@
-<script setup>
-</script>
-
 <template>
     <div class="app-container">
         <RouterView />
