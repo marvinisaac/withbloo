@@ -28,7 +28,7 @@
 
 <template>
     <div class="container-revisit">
-        <div class="revisit-date"
+        <div class="mood-entry"
             v-for="(mood, index) in all"
             :key="index"
         >
@@ -59,7 +59,7 @@
         justify-content: center;
     padding-bottom: 12vh;
     width: 100%;
-    .revisit-date {
+    .mood-entry {
         .mood-date {
             font-size: 1.5rem;
             font-weight: bolder;
