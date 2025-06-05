@@ -8,6 +8,11 @@ dexie.version(1).stores({
 const db = {
     add: async (data) => {
         try {
+            const duplicateCreatedAt = await dexie.mood.where('createdAt').equals(data.createdAt).first();
+            if (duplicateCreatedAt) {
+                return null;
+            }
+
             const id = await dexie.mood.add(data);
             return id;
         } catch (error) {
