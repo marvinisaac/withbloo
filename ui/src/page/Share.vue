@@ -58,6 +58,7 @@
     display: flex;
         flex-direction: column;
         justify-content: center;
+    min-height: 100dvh;
     min-height: 100vh;
     text-align: center;
     width: 100%;

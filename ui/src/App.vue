@@ -16,6 +16,7 @@
 
 <style lang="scss">
 .app-container {
+    min-height: 100dvh;
     min-height: 100vh;
     width: 100%;
     nav {
