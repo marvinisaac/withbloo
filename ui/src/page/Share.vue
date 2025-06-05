@@ -1,5 +1,4 @@
 <script setup>
-    import { onMounted } from 'vue';
     import {
         dateFormatFull,
         emotionsBasic,
@@ -17,11 +16,6 @@
             emotion: emotion.text
         });
     };
-
-    onMounted(async () => {
-        const all = await db.get();
-        console.log('Moods recorded:', all);
-    });
 </script>
 
 <template>

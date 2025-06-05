@@ -14,15 +14,15 @@ const db = {
             console.error('Error adding data:', error);
         }
     },
-    get: async (id) => {
+    getAll: async () => {
         try {
-            if (!id) {
-                return await dexie.mood.toArray();
-            }
-
-            return await dexie.mood.get(id);
+            return await dexie
+                .mood
+                .orderBy('createdAt')
+                .reverse()
+                .toArray();
         } catch (error) {
-            console.error('Error getting data:', error);
+            console.error('Error getting all data:', error);
             return null;
         }
     },

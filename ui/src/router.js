@@ -17,6 +17,13 @@ const router = createRouter({
             meta: {
                 title: 'Revisit - With Bloo'
             }
+        }, {
+            path: '/settings',
+            name: 'settings',
+            component: () => import('./page/Settings.vue'),
+            meta: {
+                title: 'Settings - With Bloo'
+            }
         }
     ]
 });
