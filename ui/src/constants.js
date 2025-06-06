@@ -20,12 +20,12 @@ const dateFormatTimeOnly = {
 };
 
 const emotionsBasic = [
-    { emoji: '🤮', text: 'disgust' },
-    { emoji: '😠', text: 'anger' },
-    { emoji: '😁', text: 'joy' },
-    { emoji: '☹️', text: 'sadness' },
-    { emoji: '😨', text: 'fear' },
-    { emoji: '😲', text: 'surprise' },
+    { emoji: '🤮', text: 'disgust', verb: 'disgusted' },
+    { emoji: '😠', text: 'anger', verb: 'angry' },
+    { emoji: '😁', text: 'joy', verb: 'happy' },
+    { emoji: '☹️', text: 'sadness', verb: 'sad' },
+    { emoji: '😨', text: 'fear', verb: 'afraid' },
+    { emoji: '😲', text: 'surprise', verb: 'surprised' },
 ];
 
 const emotionNothing = {

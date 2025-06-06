@@ -6,7 +6,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'share',
-            component: () => import('./page/Share.vue'),
+            component: () => import('./page/Share/Share.vue'),
             meta: {
                 title: 'Share - With Bloo'
             }

@@ -1,28 +1,38 @@
 <script setup>
     import {
-        dateFormatFull,
         emotionsBasic,
-        emotionNothing
+        emotionNothing,
     } from '@/constants';
+    import { ref } from 'vue';
     import db from '@/singleton/database';
+    import ShareModal from './ShareModal.vue';
 
-    const formattedDate = (new Date())
-        .toLocaleDateString('en-US', dateFormatFull)
-        .replaceAll(',', '');
+    const showModal = ref(false);
+    const selectedEmotion = ref(null);
 
     const handleShare = (emotion) => {
+        selectedEmotion.value = emotion;
+        showModal.value = true;
+    };
+
+    const handleModalClose = () => {
+        selectedEmotion.value = null;
+        showModal.value = false;
+    };
+
+    const handleModalSave = ({ emotion, journal }) => {
         db.add({
             createdAt: (new Date()).toISOString(),
-            emotion: emotion.text
+            emotion: emotion.text,
+            journal: journal,
         });
+        selectedEmotion.value = null;
+        showModal.value = false;
     };
 </script>
 
 <template>
     <div class="container-share">
-        <p class="date-current">
-            {{ formattedDate }}
-        </p>
         <p class="share-prompt">
             What are you feeling right now?
         </p>
@@ -44,6 +54,12 @@
                 <span class="choice-text"> {{ emotionNothing.text }} </span>
             </div>
         </div>
+        <ShareModal v-if="showModal && selectedEmotion"
+            :show="showModal"
+            :emotion="selectedEmotion"
+            @save="handleModalSave"
+            @close="handleModalClose"
+        />
     </div>
 </template>
 
@@ -56,9 +72,6 @@
     min-height: 100vh;
     text-align: center;
     width: 100%;
-    .date-current {
-        font-size: 0.875rem;
-    }
     .share-prompt {
         font-size: 1.25rem;
     }
