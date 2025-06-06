@@ -68,8 +68,7 @@
     display: flex;
         flex-direction: column;
         justify-content: center;
-    min-height: 100dvh;
-    min-height: 100vh;
+    padding: 16vh 0;
     text-align: center;
     width: 100%;
     .share-prompt {

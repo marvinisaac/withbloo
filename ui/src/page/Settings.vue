@@ -10,9 +10,11 @@
                 return;
             };
 
-            const header = ['createdAt', 'emotion'];
+            const header = ['createdAt', 'emotion', 'journal'];
             const rows = data.map(entry =>
-                [entry.createdAt, entry.emotion]
+                [entry.createdAt, entry.emotion, entry.journal]
+                    .map(field => field === undefined ? '' : field)
+                    .map(field => field === null ? '' : field)
                     .map(field => `"${String(field).replace(/"/g, '""')}"`)
                     .join(',')
             );

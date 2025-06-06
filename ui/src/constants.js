@@ -31,6 +31,7 @@ const emotionsBasic = [
 const emotionNothing = {
     emoji: '😐',
     text: 'not sure',
+    verb: 'unsure',
 };
 
 export {

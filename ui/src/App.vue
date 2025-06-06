@@ -24,8 +24,6 @@
 <style lang="scss">
 .app-container {
     --nav-height: 3rem;
-    min-height: 100dvh;
-    min-height: 100vh;
     padding: var(--nav-height) 0;
     width: 100%;
     nav {
