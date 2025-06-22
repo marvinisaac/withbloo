@@ -51,7 +51,9 @@
                     </div>
                 </div>
                 <div class="expanded">
-                    <div class="journal">
+                    <div class="journal"
+                        v-if="mood.journal"
+                    >
                         <VueMarkdown :source="mood.journal" />
                     </div>
                 </div>
