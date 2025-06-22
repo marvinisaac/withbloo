@@ -20,7 +20,7 @@
 <style lang="scss">
 .app-container {
     --nav-height: 3rem;
-    padding: var(--nav-height) 0;
+    padding: 0 0 var(--nav-height);
     width: 100%;
     nav {
         background: var(--color-background);
