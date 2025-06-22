@@ -7,6 +7,7 @@
         emotionNothing
     } from '@/constants';
     import db from '@/singleton/database';
+    import VueMarkdown from 'vue-markdown-render';
 
     const all = ref([]);
 
@@ -21,7 +22,9 @@
                 .replaceAll(',', ''),
             emoji: emotionsBasic.find(e => e.text === mood.emotion)?.emoji
                 || emotionNothing.emoji,
-            emotion: mood.emotion,
+            journal: mood.journal,
+            verb: emotionsBasic.find(e => e.text === mood.emotion)?.verb
+                || emotionNothing.verb,
         }));
     });
 </script>
@@ -32,21 +35,26 @@
             v-for="(mood, index) in all"
             :key="index"
         >
-            <p class="mood-date"
+            <p class="date"
                 v-if="mood.createdAtDate !== all[index - 1]?.createdAtDate"
             >
                 {{ mood.createdAtDate }}
             </p>
-            <div class="mood-details">
-                <span class="mood-time">
-                    {{ mood.createdAtTime }}
-                </span>
-                <span class="mood-emoji">
-                    {{ mood.emoji }}
-                </span>
-                <span class="mood-emotion">
-                    {{ mood.emotion }}
-                </span>
+            <div class="details">
+                <div class="basic">
+                    <div class="emoji">
+                        <span>{{ mood.emoji }}</span>
+                    </div>
+                    <div class="date-text">
+                        <span class="created-time">{{ mood.createdAtTime }}</span>
+                        <span class="verb">{{ mood.verb }}</span>
+                    </div>
+                </div>
+                <div class="expanded">
+                    <div class="journal">
+                        <VueMarkdown :source="mood.journal" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -56,37 +64,56 @@
 .container-revisit {
     display: flex;
         flex-direction: column;
+        gap: 1rem;
         justify-content: center;
     padding-bottom: 12vh;
     width: 100%;
     .mood-entry {
-        .mood-date {
+        .date {
             font-size: 1.5rem;
             font-weight: bolder;
             line-height: 3;
             text-align: center;
         }
-        .mood-details {
+        .details {
             display: flex;
-                align-items: center;
-                gap: 1rem;
+                flex-direction: column;
             margin: 0 auto;
-            width: 75%;
-            .mood-time {
-                font-size: 0.75rem;
-                text-align: right;
-                width: 5rem;
+            padding: 0 1rem;
+            .basic {
+                display: flex;
+                    align-items: flex-start;
+                .emoji {
+                    width: 3rem;
+                    span {
+                        display: inline-block;
+                        font-size: 2rem;
+                        line-height: 1.5;
+                        text-align: center;
+                        width: 100%;
+                    }
+                }
+                .date-text {
+                    display: flex;
+                        flex-direction: column;
+                    width: calc(100% - 3rem);
+                    .created-time {
+                        font-size: 0.75rem;
+                        line-height: 1;
+                    }
+                    .verb {
+                        font-weight: bolder;
+                        text-transform: uppercase;
+                    }
+                }
             }
-            .mood-emoji {
-                font-size: 2rem;
-                text-align: center;
-                width: 3rem;
-            }
-            .mood-emotion {
-                flex-grow: 1;
-                font-weight: bolder;
-                text-align: left;
-                text-transform: capitalize;
+            .expanded {
+                padding-left: 3rem;
+                .journal {
+                    border: 1px solid var(--color-border);
+                    border-radius: 0.25rem;
+                    padding: 0.25rem 0.5rem;
+                }
             }
         }
     }

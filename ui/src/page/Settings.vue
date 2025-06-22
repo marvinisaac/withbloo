@@ -101,6 +101,6 @@
 
 <style lang="scss" scoped>
 .container-settings {
-    padding: 1rem;
+    padding: 0 1rem;
 }
 </style>
