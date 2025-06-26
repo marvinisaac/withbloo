@@ -1,5 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
+    import { onMounted, ref } from 'vue';
     import db from '@/singleton/database';
 
     const download = () => {
@@ -71,10 +71,28 @@
         event.target.value = '';
     };
 
-    const fileInput = ref(null);
     const triggerRestore = () => {
         fileInput.value.click();
     };
+
+    const fileInput = ref(null);
+    const storage = {
+        available: ref(null),
+        used: ref(null),
+    };
+
+    onMounted(async () => {
+        if (navigator.storage && navigator.storage.estimate) {
+            const estimate = await navigator.storage.estimate();
+            const used = estimate.usage || 0;
+            const quota = estimate.quota || 0;
+            const toMB = (bytes) => (bytes / (1024 * 1024)).toFixed(2) + 'MB';
+            const toGB = (bytes) => (bytes / (1024 * 1024 * 1024)).toFixed(2) + 'GB';
+            const display = (bytes) => bytes > 1024 * 1024 * 1024 ? toGB(bytes) : toMB(bytes);
+            storage.available.value = display(quota);
+            storage.used.value = display(used);
+        }
+    });
 </script>
 
 <template>
@@ -82,6 +100,8 @@
         <h1>
             Settings
         </h1>
+
+        <h2>Backup</h2>
         <button @click="download">
             Download Backup
         </button>
@@ -96,11 +116,20 @@
             style="display: none"
             @change="restore"
         />
+
+        <h2>Storage</h2>
+        <p>{{ storage.used }} / {{ storage.available }}</p>
     </div>
 </template>
 
 <style lang="scss" scoped>
 .container-settings {
     padding: 0 1rem;
+    h1 {
+        border-bottom: 1px solid var(--color-border);
+    }
+    h2 {
+        margin-top: 1em;
+    }
 }
 </style>
