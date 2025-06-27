@@ -1,17 +1,21 @@
 {
-  "name": "With Bloo",
-  "short_name": "With Bloo",
-  "description": "Track your emotions With Bloo",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#181818",
-  "orientation": "portrait",
-  "icons": [
+    "name": "With Bloo",
+    "short_name": "With Bloo",
+    "description": "Track your emotions With Bloo",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#181818",
+    "orientation": "portrait",
+    "icons": [
         {
-            "src": "/public/favicon.ico",
-            "sizes": "32x32",
+            "src": "/favicon.ico",
+            "sizes": "48x48",
             "type": "image/x-icon"
+        }, {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
         }
-  ]
+    ]
 }
