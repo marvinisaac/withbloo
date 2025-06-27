@@ -36,6 +36,16 @@
         });
     }
     
+    const formatTimestamp = (t) => {
+        const date = new Date(t * 1000);
+        const year = date.getFullYear();
+        const month = date.toLocaleString('en-US', { month: 'short' });
+        const day = String(date.getDate()).padStart(2, '0');
+        const hour = String(date.getHours()).padStart(2, '0');
+        const min = String(date.getMinutes()).padStart(2, '0');
+        return `${year} ${month} ${day} ${hour}:${min}`;
+    }
+
     const restore = async (event) => {
         const file = event.target.files[0];
         if (!file) {
@@ -75,6 +85,8 @@
         fileInput.value.click();
     };
 
+    const buildDate = import.meta.env.VITE_BUILD_DATE;
+    const buildVersion = import.meta.env.VITE_BUILD_VERSION;
     const fileInput = ref(null);
     const storage = {
         available: ref(null),
@@ -117,8 +129,17 @@
             @change="restore"
         />
 
-        <h2>Storage</h2>
-        <p>{{ storage.used }} / {{ storage.available }}</p>
+        <h2>Debug</h2>
+        <p>Storage:
+            <span>
+                {{ storage.used }} / {{ storage.available }}
+            </span>
+        </p>
+        <p>Version:
+            <span>
+                v0.0.{{ buildVersion.slice(0, 6) }} ({{ formatTimestamp(buildDate) }})
+            </span>
+        </p>
     </div>
 </template>
 
@@ -130,6 +151,12 @@
     }
     h2 {
         margin-top: 1em;
+    }
+    p {
+        span {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+        }
     }
 }
 </style>
