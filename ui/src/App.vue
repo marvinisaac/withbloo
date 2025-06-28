@@ -1,5 +1,12 @@
+<script setup>
+    const isPwa = window.matchMedia('(display-mode: standalone)').matches
+        || window.navigator.standalone;
+</script>
+
 <template>
-    <div class="app-container">
+    <div class="app-container"
+        :class="{ pwa: isPwa }"
+    >
         <RouterView />
         <nav id="nav-bottom">
             <ul>
@@ -14,6 +21,7 @@
                 </li>
             </ul>
         </nav>
+        <div id="pwa-spacer" v-if="isPwa"></div>
     </div>
 </template>
 
@@ -63,6 +71,22 @@
                 width: calc(100% / 3);
             }
         }
+    }
+}
+.app-container.pwa {
+    --pwa-spacer-height: env(safe-area-inset-bottom);
+    padding: 0 0 calc(var(--nav-height) + var(--pwa-spacer-height));
+    nav#nav-bottom {
+        position: fixed;
+            bottom: var(--pwa-spacer-height);
+    }
+    div#pwa-spacer {
+        background: var(--color-background);
+        height: var(--pwa-spacer-height);
+        position: fixed;
+            bottom: 0;
+            left: 0;
+        width: 100%;
     }
 }
 </style>
