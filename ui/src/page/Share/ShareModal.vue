@@ -38,6 +38,7 @@
                 <span class="modal-text">{{ emotion.text }}</span>
             </div>
             <textarea v-model="journal"
+                :name="`Why are you feeling ${emotion.verb}?`"
                 :placeholder="`Why are you feeling ${emotion.verb}?`"
             >
             </textarea>
@@ -64,7 +65,7 @@
     z-index: 2000;
     .modal-content {
         background: var(--color-background);
-        border-radius: 1rem;
+        border-radius: 0.5rem;
         display: flex;
             flex-direction: column;
             gap: 1rem;
@@ -85,6 +86,7 @@
         textarea {
             border-radius: 0.5rem;
             font-family: inherit;
+            font-size: inherit;
             min-height: 80px;
             padding: 0.5rem;
             resize: vertical;
@@ -95,16 +97,20 @@
                 gap: 1rem;
                 justify-content: center;
             button {
-                background: var(--color-background-mute);
+                background: var(--color-background);
                 border: none;
                 border-radius: 0.5rem;
                 color: var(--color-text);
                 cursor: pointer;
+                font-size: inherit;
                 font-weight: bolder;
                 line-height: 3;
                 padding: 0;
                 text-align: center;
                 width: 50%;
+                &:first-of-type {
+                    background: var(--color-background-mute);
+                }
             }
         }
     }
