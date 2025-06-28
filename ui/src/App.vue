@@ -74,7 +74,7 @@
     }
 }
 .app-container.pwa {
-    --pwa-spacer-height: env(safe-area-inset-bottom);
+    --pwa-spacer-height: 34px;
     padding: 0 0 calc(var(--nav-height) + var(--pwa-spacer-height));
     nav#nav-bottom {
         position: fixed;
