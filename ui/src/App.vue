@@ -1,11 +1,11 @@
 <script setup>
-    const isPwa = window.matchMedia('(display-mode: standalone)').matches
-        || window.navigator.standalone;
+    const isIosPwa = window.matchMedia('(display-mode: standalone)').matches
+        && /iPhone|iPad|iPod/i.test(navigator.userAgent);
 </script>
 
 <template>
     <div class="app-container"
-        :class="{ pwa: isPwa }"
+        :class="{ pwa: isIosPwa }"
     >
         <RouterView />
         <nav id="nav-bottom">
@@ -21,7 +21,7 @@
                 </li>
             </ul>
         </nav>
-        <div id="pwa-spacer" v-if="isPwa"></div>
+        <div id="pwa-spacer" v-if="isIosPwa"></div>
     </div>
 </template>
 
@@ -74,15 +74,16 @@
     }
 }
 .app-container.pwa {
-    --pwa-spacer-height: 34px;
-    padding: 0 0 calc(var(--nav-height) + var(--pwa-spacer-height));
+    --ios-bottom: 20px;
+    padding: 0 0 var(--pwa-nav-height);
     nav#nav-bottom {
+        border-bottom: 1px solid var(--color-border);
         position: fixed;
-            bottom: var(--pwa-spacer-height);
+            bottom: var(--ios-bottom);
     }
     div#pwa-spacer {
         background: var(--color-background);
-        height: var(--pwa-spacer-height);
+        height: var(--ios-bottom);
         position: fixed;
             bottom: 0;
             left: 0;
