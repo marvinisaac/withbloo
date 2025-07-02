@@ -22,6 +22,7 @@
                 .replaceAll(',', ''),
             emoji: emotionsBasic.find(e => e.text === mood.emotion)?.emoji
                 || emotionNothing.emoji,
+            image: mood.image,
             journal: mood.journal,
             verb: emotionsBasic.find(e => e.text === mood.emotion)?.verb
                 || emotionNothing.verb,
@@ -51,11 +52,18 @@
                     </div>
                 </div>
                 <div class="expanded">
-                    <div class="journal"
-                        v-if="mood.journal"
+                    <div v-if="mood.journal"
+                        class="journal"
                     >
-                        <VueMarkdown :source="mood.journal" />
+                        <VueMarkdown :source="mood.journal"
+                            class="markdown"
+                        />
                     </div>
+                    <img v-if="mood.image"
+                        :src="mood.image"
+                        alt="Attached image to mood entry"
+                        class="image"
+                    />
                 </div>
             </div>
         </div>
@@ -111,10 +119,21 @@
             }
             .expanded {
                 padding-left: 3rem;
-                .journal {
-                    border: 1px solid var(--color-border);
+                .image {
                     border-radius: 0.25rem;
-                    padding: 0.25rem 0.5rem;
+                    width: auto;
+                        max-width: 100%;
+                }
+                .journal {
+                    :deep(.markdown) {
+                        line-height: 1.5;
+                        p {
+                            margin-bottom: 1rem;
+                            &:last-of-type {
+                                margin-bottom: 0;
+                            }
+                        }       
+                    }
                 }
             }
         }

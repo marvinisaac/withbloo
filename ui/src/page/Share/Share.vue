@@ -20,11 +20,12 @@
         showModal.value = false;
     };
 
-    const handleModalSave = ({ emotion, journal }) => {
+    const handleModalSave = ({ emotion, image, journal }) => {
         db.add({
             createdAt: (new Date()).toISOString(),
             emotion: emotion.text,
-            journal: journal,
+            image,
+            journal,
         });
         selectedEmotion.value = null;
         showModal.value = false;
