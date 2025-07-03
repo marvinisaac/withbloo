@@ -1,40 +1,7 @@
 <script setup>
     import { onMounted, ref } from 'vue';
     import db from '@/singleton/database';
-
-    const download = () => {
-        db.getAll().then((data) => {
-            if (!data || !data.length) {
-                console.error('No data available for download');
-                alert('No data available for download');
-                return;
-            };
-
-            const header = ['createdAt', 'emotion', 'journal'];
-            const rows = data.map(entry =>
-                [entry.createdAt, entry.emotion, entry.journal]
-                    .map(field => field === undefined ? '' : field)
-                    .map(field => field === null ? '' : field)
-                    .map(field => `"${String(field).replace(/"/g, '""')}"`)
-                    .join(',')
-            );
-            const csvContent = [header.join(','), ...rows].join('\r\n');
-
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            const formattedDate = (new Date())
-                .toISOString()
-                .replaceAll(':', '-');
-            const filename = `withbloo-backup-${formattedDate}.csv`;
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        });
-    }
+    import Backup from '@/component/Backup.vue';
     
     const formatTimestamp = (t) => {
         const date = new Date(t * 1000);
@@ -114,9 +81,7 @@
         </h1>
 
         <h2>Backup</h2>
-        <button @click="download">
-            Download Backup
-        </button>
+        <Backup/>
         <br/>
         <button @click="triggerRestore">
             Restore Backup
