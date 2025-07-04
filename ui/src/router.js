@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import SettingsPage from './page/Settings.vue';
+import SharePage from './page/Share/Share.vue';
+import RevisitPage from './page/Revisit.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -6,21 +9,21 @@ const router = createRouter({
         {
             path: '/',
             name: 'share',
-            component: () => import('./page/Share/Share.vue'),
+            component: SharePage,
             meta: {
                 title: 'Share - With Bloo'
             }
         }, {
             path: '/revisit',
             name: 'revisit',
-            component: () => import('./page/Revisit.vue'),
+            component: RevisitPage,
             meta: {
                 title: 'Revisit - With Bloo'
             }
         }, {
             path: '/settings',
             name: 'settings',
-            component: () => import('./page/Settings.vue'),
+            component: SettingsPage,
             meta: {
                 title: 'Settings - With Bloo'
             }

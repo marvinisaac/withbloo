@@ -7,25 +7,48 @@ const ASSETS = [
   '/manifest.json'
 ];
 
-const precache = async () => {
+const clearOlderVersion = async (url) => {
   const cache = await caches.open(CACHE_NAME);
-  cache.addAll(ASSETS);
+  const match = url.pathname.match(/^\/assets\/(.+?)-[^/]+(\.[a-zA-Z0-9]+)$/);
+  if (match) {
+    const [ fullName, baseName, ext ] = match;
+    const keys = await cache.keys();
+    keys.forEach(key => {
+      const keyUrl = new URL(key.url);
+      const keyMatch = keyUrl.pathname.match(/^\/assets\/(.+?)-[^/]+(\.[a-zA-Z0-9]+)$/);
+      if (keyMatch
+        && keyUrl.pathname !== url.pathname
+        && keyMatch[1] === baseName
+        && keyMatch[2] === ext
+      ) {
+        // console.log('Possible match found');
+        // console.log(keyMatch);
+        console.log(`Deleting ${fullName} from cache`);
+        cache.delete(key);
+        return;
+      }
+    });
+  }
   return;
 }
 
 const tryNetworkFirst = async (request) => {
   try {
     const networkResponse = await fetch(request);
-    if (networkResponse.ok) {  
-      console.log(`${request.url} from server`);
+    if (networkResponse.ok) {
       const cache = await caches.open(CACHE_NAME);
+      const url = new URL(request.url);
+      if (url.pathname.startsWith('/assets/')) {
+        clearOlderVersion(url);
+      }
       cache.put(request, networkResponse.clone());
     }
     return networkResponse;
   } catch (error) {
     console.log(`${request.url} from cache`);
+    console.error(error);
     const cachedResponse = await caches.match(request);
-    return cachedResponse || Response.error();
+    return cachedResponse || null;
   }
 }
 

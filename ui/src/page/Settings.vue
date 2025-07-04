@@ -54,6 +54,7 @@
 
     const buildDate = import.meta.env.VITE_BUILD_DATE;
     const buildVersion = import.meta.env.VITE_BUILD_VERSION;
+    const cachedFileCount = ref(0);
     const fileInput = ref(null);
     const storage = {
         available: ref(null),
@@ -71,6 +72,10 @@
             storage.available.value = display(quota);
             storage.used.value = display(used);
         }
+        
+        const cache = await caches.open('withbloo-cache');
+        const cachedKeys = await cache.keys();
+        cachedFileCount.value = cachedKeys.length;
     });
 </script>
 
@@ -81,11 +86,12 @@
         </h1>
 
         <h2>Backup</h2>
-        <Backup/>
-        <br/>
-        <button @click="triggerRestore">
-            Restore Backup
-        </button>
+        <div class="button-container">
+            <Backup/>
+            <button @click="triggerRestore" type="button">
+                Restore Backup
+            </button>
+        </div>
         <input
             type="file"
             ref="fileInput"
@@ -95,6 +101,11 @@
         />
 
         <h2>Debug</h2>
+        <p>Cached files:
+            <span>
+                {{ cachedFileCount }}
+            </span>
+        </p>
         <p>Storage:
             <span>
                 {{ storage.used }} / {{ storage.available }}
@@ -111,6 +122,21 @@
 <style lang="scss" scoped>
 .container-settings {
     padding: 0 1rem;
+    .button-container {
+        display: flex;
+            gap: 1rem;
+    }
+    button {
+        background: transparent;
+        border: var(--color-border) 1px solid;
+        border-radius: 0.5rem;
+        color: inherit;
+        cursor: pointer;
+        font-size: inherit;
+        line-height: 2;
+        padding: 0 0.5rem;
+        text-align: center;
+    }
     h1 {
         border-bottom: 1px solid var(--color-border);
     }
