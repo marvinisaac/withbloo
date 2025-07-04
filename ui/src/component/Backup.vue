@@ -1,6 +1,9 @@
 <script setup>
     import db from '@/singleton/database';
     import JSZip from 'jszip';
+    import { Marked } from 'marked';
+
+    const marked = new Marked();
 
     const backup = async () => {
         const capitalizeWords = (string) => {
@@ -10,6 +13,7 @@
                 .join(' ');
         }
 
+        const dateBackup = new Date();
         const data = await db.getAll();
         if (!data || !data.length) {
             alert('No entry to backup');
@@ -22,7 +26,9 @@
 
         for (let i = 0; i < data.length; i++) {
             const entry = { ...data[i] };
+            entry.createdAt = (new Date(entry.createdAt)).toLocaleString();
             entry.emotion = capitalizeWords(entry.emotion);
+            entry.journalHtml = marked.parse(entry.journal);
             entries.push(entry);
             // Handle images
             if (entry.image && entry.image.startsWith('data:')) {
@@ -35,27 +41,27 @@
 
         // Add other files to ZIP file
         zip.file('entries.json', JSON.stringify(entries));
-        zip.file('index.html', createHtml(entries));
+        zip.file('index.html', createHtml(dateBackup, entries));
 
         // Generate and trigger download of ZIP file
         const blob = await zip.generateAsync({ type: 'blob' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `withbloo-backup-${new Date().toISOString().replace(/:/g, '-')}.zip`;
+        a.download = `withbloo-backup-${dateBackup.toISOString().replace(/:/g, '-')}.zip`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
     }
 
-    const createHtml = (entries) => {
+    const createHtml = (dateBackup, entries) => {
         const htmlStart = `
 <html>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>With Bloo - Backup (${new Date().toISOString().replace(/:/g, '-')})</title>
+        <title>With Bloo - Backup (${dateBackup.toLocaleString()})</title>
         <style>
             body {
                 font-family: sans-serif;
@@ -72,6 +78,11 @@
                 border-top: 1px solid #ccc;
                 padding: 1em 0;
             }
+            .entry div {
+                border-radius: 0.25em;
+                border-left: 0.25em solid #ccc;
+                padding-left: 1em;
+            }
             .entry img {
                 border-radius: 0.25em;
                 display: block;
@@ -83,7 +94,7 @@
     </head>
     <body>
         <h1>With Bloo Backup</h1>
-        <sub>${new Date().toISOString().replace(/:/g, '-')}</sub>
+        <sub>${dateBackup.toLocaleString()}</sub>
         <div class="entries">
         `;
         const htmlEnd = `
@@ -95,14 +106,17 @@
         entries.forEach(entry => {
             htmlEntries += `
             <div class="entry">
-                <div><b>Date:</b> ${entry.createdAt}</div>
-                <div><b>Emotion:</b> ${entry.emotion}</div>
+                <p><b>Date:</b> ${entry.createdAt}</p>
+                <p><b>Emotion:</b> ${entry.emotion}</p>
                 ${entry.journal
-                    ? `<div><b>Journal:</b> ${entry.journal || ''}</div>`
+                    ? `
+                <p><b>Journal:</b></p>
+                <div>${entry.journalHtml || ''}</div>`
                     : ''
                 }
                 ${entry.image
-                    ? `<img src="images/${entry.image}" alt="image">`
+                    ? `
+                <img src="images/${entry.image}" alt="image">`
                     : ''
                 }
             </div>
@@ -110,7 +124,6 @@
         });
         return htmlStart + htmlEntries + htmlEnd;
     }
-
 </script>
 
 <template>
