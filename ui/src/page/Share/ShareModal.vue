@@ -108,7 +108,6 @@
                 </button>
                 <input @change="imageSelect"
                     accept="image/*"
-                    capture="environment"
                     ref="cameraInput"
                     style="display: none"
                     type="file"
