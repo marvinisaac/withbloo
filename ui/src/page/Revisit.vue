@@ -96,9 +96,9 @@
                 .emoji {
                     width: 3rem;
                     span {
-                        display: inline-block;
+                        display: block;
                         font-size: 2rem;
-                        line-height: 1.5;
+                        line-height: 1.25;
                         text-align: center;
                         width: 100%;
                     }

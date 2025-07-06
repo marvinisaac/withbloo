@@ -1,35 +1,11 @@
 <script setup>
-    import {
-        defineEmits,
-        defineProps,
-        ref,
-        watch,
-    } from 'vue';
+    import { defineEmits, ref } from 'vue';
+    import { useShareModalStore } from '@/store/shareModal';
+    import ShareModalMood from './ShareModalMood.vue';
 
-    const emit = defineEmits(['close', 'save']);
-    const props = defineProps({
-        emotion: { type: Object, required: true },
-        show: { type: Boolean, required: true },
-    });
-    
+    const emit = defineEmits(['save']);
     const imageFile = ref(null);
-    const imagePreview = ref(null);
-    const journal = ref('');
-
-    watch(() => props.show, (val) => {
-        if (!val) {
-            return journal.value = '';
-        }
-    });
-
-    const close = () => {
-        emit('close');
-        journal.value = '';
-    }
-    
-    const imageDelete = () => {
-        imagePreview.value = null;
-    }
+    const shareModalStore = useShareModalStore();
 
     const imageSelect = (event) => {
         const file = event.target.files[0];
@@ -55,7 +31,7 @@
                     canvas.height = height;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
-                    imagePreview.value = canvas.toDataURL('image/webp', 0.8);
+                    shareModalStore.image = canvas.toDataURL('image/webp', 0.8);
                 };
                 img.src = e.target.result;
             };
@@ -64,15 +40,7 @@
     };
 
     const save = () => {
-        emit(
-            'save',
-            {
-                emotion: props.emotion,
-                image: imagePreview.value,
-                journal: journal.value
-            }
-        );
-        journal.value = '';
+        emit('save');
     }
 </script>
 
@@ -81,26 +49,24 @@
         class="modal-backdrop" 
     >
         <div class="modal-content">
-            <span @click="close"
+            <span @click="shareModalStore.handleClose"
                 class="modal-close"
             >
                 Close
             </span>
-            <div class="modal-emotion">
-                <span class="modal-emoji">{{ emotion.emoji }}</span>
-                <span class="modal-text">{{ emotion.text }}</span>
-            </div>
+
+            <ShareModalMood />
 
             <div class="modal-journal">
-                <textarea v-model="journal"
-                    :name="`Why are you feeling ${emotion.verb}?`"
-                    :placeholder="`Why are you feeling ${emotion.verb}?`"
+                <textarea v-model="shareModalStore.journal"
+                    :name="`Why are you feeling ${shareModalStore.emotion.verb}?`"
+                    :placeholder="`Why are you feeling ${shareModalStore.emotion.verb}?`"
                 >
                 </textarea>
             </div>
             
             <div class="modal-image">
-                <button v-if="!imagePreview"
+                <button v-if="!shareModalStore.image"
                     @click="$refs.cameraInput.click()"
                     type="button"
                 >
@@ -113,21 +79,21 @@
                     type="file"
                 />
 
-                <div v-if="imagePreview"
+                <div v-if="shareModalStore.image"
                     class="preview"
                 >
-                    <span @click="imageDelete"
+                    <span @click="shareModalStore.image = null"
                         class="preview-delete"
                     >
                         Delete
                     </span>
-                    <img :src="imagePreview" alt="Upload Preview" />
+                    <img :src="shareModalStore.image" alt="Upload Preview" />
                 </div>
             </div>
 
             <div class="modal-actions">
                 <button @click="save">Save</button>
-                <button @click="close">Cancel</button>
+                <button @click="shareModalStore.handleClose">Cancel</button>
             </div>
         </div>
     </div>
@@ -174,7 +140,7 @@
         .modal-close,
         .preview-delete {
             background: red;
-            border-radius: 0 0.5rem;
+            border-radius: 0 0.5rem 0 0;
             color: var(--color-heading);
             font-size: 0.75rem;
             line-height: 2;
@@ -183,19 +149,6 @@
                 top: 0;
                 right: 0;
             text-transform: uppercase;
-        }
-        .modal-emotion {
-            display: flex;
-                align-items: center;
-                gap: 1rem;
-                justify-content: center;
-            .modal-emoji {
-                font-size: 2rem;
-            }
-            .modal-text {
-                font-weight: bolder;
-                text-transform: capitalize;
-            }
         }
         .modal-journal {
             textarea {

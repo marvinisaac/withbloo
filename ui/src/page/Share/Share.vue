@@ -3,32 +3,24 @@
         emotionsBasic,
         emotionNothing,
     } from '@/constants';
-    import { ref } from 'vue';
+    import { useShareModalStore } from '@/store/shareModal';
     import db from '@/singleton/database';
-    import ShareModal from './ShareModal.vue';
+    import ShareModal from '@/page/Share/ShareModal/ShareModal.vue';
 
-    const showModal = ref(false);
-    const selectedEmotion = ref(null);
+    const shareModalStore = useShareModalStore();
 
     const handleShare = (emotion) => {
-        selectedEmotion.value = emotion;
-        showModal.value = true;
+        shareModalStore.handleOpen(emotion);
     };
 
-    const handleModalClose = () => {
-        selectedEmotion.value = null;
-        showModal.value = false;
-    };
-
-    const handleModalSave = ({ emotion, image, journal }) => {
+    const handleModalSave = () => {
         db.add({
             createdAt: (new Date()).toISOString(),
-            emotion: emotion.text,
-            image,
-            journal,
+            emotion: shareModalStore.emotion.text,
+            image: shareModalStore.image,
+            journal: shareModalStore.journal,
         });
-        selectedEmotion.value = null;
-        showModal.value = false;
+        shareModalStore.handleClose();
     };
 </script>
 
@@ -55,11 +47,9 @@
                 <span class="choice-text"> {{ emotionNothing.text }} </span>
             </div>
         </div>
-        <ShareModal v-if="showModal && selectedEmotion"
-            :show="showModal"
-            :emotion="selectedEmotion"
+        <ShareModal v-if="shareModalStore.isVisible"
             @save="handleModalSave"
-            @close="handleModalClose"
+            @close="handleClose"
         />
     </div>
 </template>
