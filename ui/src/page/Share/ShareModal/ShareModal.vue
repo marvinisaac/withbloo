@@ -1,7 +1,7 @@
 <script setup>
     import { defineEmits, ref } from 'vue';
     import { useShareModalStore } from '@/store/shareModal';
-    import ShareModalMood from './ShareModalMood.vue';
+    import ShareModalEmotionPrimary from '@/page/Share/ShareModal/ShareModalEmotionPrimary.vue';
 
     const emit = defineEmits(['save']);
     const imageFile = ref(null);
@@ -45,7 +45,7 @@
 </script>
 
 <template>
-    <div @click.self="close"
+    <div @click.self="shareModalStore.handleClose"
         class="modal-backdrop" 
     >
         <div class="modal-content">
@@ -55,7 +55,7 @@
                 Close
             </span>
 
-            <ShareModalMood />
+            <ShareModalEmotionPrimary />
 
             <div class="modal-journal">
                 <textarea v-model="shareModalStore.journal"
@@ -100,93 +100,93 @@
 </template>
 
 <style lang="scss" scoped>
-.modal-backdrop {
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-        align-items: center;
-        justify-content: center;
-    padding: 1rem;
-    position: fixed;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        top: 0;
-    z-index: 2000;
-    .modal-content {
-        background: var(--color-background);
-        border-radius: 0.5rem;
+    .modal-backdrop {
+        background-color: rgba(0, 0, 0, 0.8);
         display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        height: auto;
-            max-height: 90vh;
-        overflow-y: scroll;
+            align-items: center;
+            justify-content: center;
         padding: 1rem;
-        position: relative;
-        width: 100%;
-        button {
-            background: var(--color-background-mute);
-            border: none;
+        position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+        z-index: 2000;
+        .modal-content {
+            background: var(--color-background);
             border-radius: 0.5rem;
-            color: var(--color-text);
-            cursor: pointer;
-            font-size: inherit;
-            font-weight: bolder;
-            line-height: 2;
-            padding: 0;
-            text-align: center;
-            width: 50%;
-        }
-        .modal-close,
-        .preview-delete {
-            background: red;
-            border-radius: 0 0.5rem 0 0;
-            color: var(--color-heading);
-            font-size: 0.75rem;
-            line-height: 2;
-            padding: 0 0.5rem;
-            position: absolute;
-                top: 0;
-                right: 0;
-            text-transform: uppercase;
-        }
-        .modal-journal {
-            textarea {
+            display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            height: auto;
+                max-height: 90vh;
+            overflow-y: scroll;
+            padding: 1rem;
+            position: relative;
+            width: 100%;
+            button {
+                background: var(--color-background-mute);
+                border: none;
                 border-radius: 0.5rem;
-                display: block;
-                font-family: inherit;
+                color: var(--color-text);
+                cursor: pointer;
                 font-size: inherit;
-                min-height: 80px;
-                padding: 0.5rem;
-                resize: vertical;
-                width: 100%;
+                font-weight: bolder;
+                line-height: 2;
+                padding: 0;
+                text-align: center;
+                width: 50%;
             }
-        }
-        .modal-image {
-            .preview {
-                position: relative;
-                img {
+            .modal-close,
+            .preview-delete {
+                background: red;
+                border-radius: 0 0.5rem 0 0;
+                color: var(--color-heading);
+                font-size: 0.75rem;
+                line-height: 2;
+                padding: 0 0.5rem;
+                position: absolute;
+                    top: 0;
+                    right: 0;
+                text-transform: uppercase;
+            }
+            .modal-journal {
+                textarea {
                     border-radius: 0.5rem;
+                    display: block;
+                    font-family: inherit;
+                    font-size: inherit;
+                    min-height: 80px;
+                    padding: 0.5rem;
+                    resize: vertical;
                     width: 100%;
                 }
             }
-        }
-        .modal-actions {
-            display: flex;
-                gap: 1rem;
-                justify-content: center;
-            margin-top: 2rem;
-            button {
-                line-height: 3;
-                &:first-of-type {
-                    background: var(--bloo);
-                    color: var(--color-heading);
+            .modal-image {
+                .preview {
+                    position: relative;
+                    img {
+                        border-radius: 0.5rem;
+                        width: 100%;
+                    }
                 }
-                &:last-of-type {
-                    background: var(--color-background);
+            }
+            .modal-actions {
+                display: flex;
+                    gap: 1rem;
+                    justify-content: center;
+                margin-top: 2rem;
+                button {
+                    line-height: 3;
+                    &:first-of-type {
+                        background: var(--bloo);
+                        color: var(--color-heading);
+                    }
+                    &:last-of-type {
+                        background: var(--color-background);
+                    }
                 }
             }
         }
     }
-}
 </style>

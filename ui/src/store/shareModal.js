@@ -1,8 +1,13 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { getCombinedEmotions } from '@/constants';
 
 export const useShareModalStore = defineStore('shareModal', () => {
     const emotion = ref(null);
+    const emotionSecondary = {
+        emotion: ref(null),
+        isVisible: ref(false),
+    };
     const image = ref(null);
     const isVisible = ref(false);
     const journal = ref('');
@@ -12,7 +17,16 @@ export const useShareModalStore = defineStore('shareModal', () => {
         image.value = null;
         isVisible.value = false;
         journal.value = '';
+        emotionSecondary.emotion.value = null;
+        emotionSecondary.isVisible.value = false;
     }
+
+    const emotionCombo = computed(() => {
+        return getCombinedEmotions(
+            emotion.value?.text,
+            emotionSecondary.emotion?.value?.text
+        );
+    });
 
     function handleClose() {
         _reset();
@@ -24,9 +38,14 @@ export const useShareModalStore = defineStore('shareModal', () => {
     }
 
     return {
+        // Variables
         emotion,
+        emotionCombo,
+        emotionSecondary,
         image,
         isVisible,
+        journal,
+        // Functions
         handleClose,
         handleOpen,
     };
