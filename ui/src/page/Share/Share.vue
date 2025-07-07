@@ -11,9 +11,15 @@
     const shareModalStore = useShareModalStore();
 
     const handleModalSave = () => {
+        const getEmotion = () => {
+            if (!shareModalStore.emotionSecondary.emotion) {
+                return shareModalStore.emotion.text;
+            }
+            return `${shareModalStore.emotion.text} ${shareModalStore.emotionSecondary.emotion.text}`;
+        }
         db.add({
             createdAt: (new Date()).toISOString(),
-            emotion: shareModalStore.emotion.text,
+            emotion: getEmotion(),
             image: shareModalStore.image,
             journal: shareModalStore.journal,
         });
