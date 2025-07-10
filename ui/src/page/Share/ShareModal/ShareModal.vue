@@ -7,6 +7,11 @@
     const imageFile = ref(null);
     const shareModalStore = useShareModalStore();
 
+    const getEmotionVerb = () => {
+        return shareModalStore.emotionCombo?.verb
+            || shareModalStore.emotion.verb;
+    }
+
     const imageSelect = (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -59,8 +64,8 @@
 
             <div class="modal-journal">
                 <textarea v-model="shareModalStore.journal"
-                    :name="`Why are you feeling ${shareModalStore.emotion.verb}?`"
-                    :placeholder="`Why are you feeling ${shareModalStore.emotion.verb}?`"
+                    :name="`Why are you feeling ${getEmotionVerb()}?`"
+                    :placeholder="`Why are you feeling ${getEmotionVerb()}?`"
                 >
                 </textarea>
             </div>
