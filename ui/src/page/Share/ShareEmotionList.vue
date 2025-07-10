@@ -8,13 +8,12 @@
 
     const shareModalStore = useShareModalStore();
     const emotionsBasicShuffled = emotionsBasic
-        .filter(emotion => emotion.text !== shareModalStore.emotion?.text)
+        .filter(emotion => emotion.noun !== shareModalStore.emotion?.noun)
         .sort(() => Math.random() - 0.5);
 
     const handleShare = (emotion) => {
-        if (shareModalStore.emotionSecondary.isVisible) {
-            shareModalStore.emotionSecondary.emotion = emotion;
-            console.log(shareModalStore.emotionSecondary);
+        if (shareModalStore.isSecondaryVisible) {
+            shareModalStore.emotionSecondary = emotion;
             return;
         }
 
@@ -33,7 +32,7 @@
                 :key="index"
             />
             <EmotionSingle
-                v-if="!shareModalStore.emotionSecondary.isVisible"
+                v-if="!shareModalStore.isSecondaryVisible"
                 @click="handleShare(emotionNothing)"
                 :emotion="emotionNothing"
             />

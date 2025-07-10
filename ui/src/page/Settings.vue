@@ -21,8 +21,8 @@
             return;
         }
 
-        const text = await file.text();
-        const lines = text.trim().split('\r\n');
+        const noun = await file.noun();
+        const lines = noun.trim().split('\r\n');
         const [header, ...rows] = lines;
         const columns = header.split(',')
             .map(h => h.replace(/"/g, '').trim());

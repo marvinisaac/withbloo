@@ -6,8 +6,8 @@
 </script>
 
 <template>
-    <div v-if="shareModalStore.emotionSecondary.isVisible"
-        @click="shareModalStore.emotionSecondary.isVisible = false"
+    <div v-if="shareModalStore.isSecondaryVisible"
+        @click="shareModalStore.isSecondaryVisible = false"
         class="modal-backdrop" 
     >
         <div class="modal-content">

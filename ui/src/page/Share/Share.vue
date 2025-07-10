@@ -12,10 +12,10 @@
 
     const handleModalSave = () => {
         const getEmotion = () => {
-            if (!shareModalStore.emotionSecondary.emotion) {
-                return shareModalStore.emotion.text;
+            if (!shareModalStore.emotionSecondary) {
+                return shareModalStore.emotion.noun;
             }
-            return `${shareModalStore.emotion.text} ${shareModalStore.emotionSecondary.emotion.text}`;
+            return `${shareModalStore.emotion.noun} ${shareModalStore.emotionSecondary.noun}`;
         }
         db.add({
             createdAt: (new Date()).toISOString(),
@@ -33,7 +33,7 @@
             What are you feeling right now?
         </p>
         <ShareEmotionList/>
-        <ShareModal v-if="shareModalStore.isVisible"
+        <ShareModal v-if="shareModalStore.isPrimaryVisible"
             @save="handleModalSave"
             @close="handleClose"
         />

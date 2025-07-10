@@ -4,27 +4,25 @@ import { getCombinedEmotions } from '@/constants';
 
 export const useShareModalStore = defineStore('shareModal', () => {
     const emotion = ref(null);
-    const emotionSecondary = {
-        emotion: ref(null),
-        isVisible: ref(false),
-    };
+    const emotionSecondary = ref(null);
     const image = ref(null);
-    const isVisible = ref(false);
+    const isPrimaryVisible = ref(false);
+    const isSecondaryVisible = ref(false);
     const journal = ref('');
 
     function _reset() {
         emotion.value = null;
         image.value = null;
-        isVisible.value = false;
+        isPrimaryVisible.value = false;
+        isSecondaryVisible.value = false;
         journal.value = '';
-        emotionSecondary.emotion.value = null;
-        emotionSecondary.isVisible.value = false;
+        emotionSecondary.value = null;
     }
 
     const emotionCombo = computed(() => {
         return getCombinedEmotions(
-            emotion.value?.text,
-            emotionSecondary.emotion?.value?.text
+            emotion.value?.noun,
+            emotionSecondary.value?.noun
         );
     });
 
@@ -34,7 +32,7 @@ export const useShareModalStore = defineStore('shareModal', () => {
 
     function handleOpen(selectedEmotion) {
         emotion.value = selectedEmotion;
-        isVisible.value = true;
+        isPrimaryVisible.value = true;
     }
 
     return {
@@ -43,7 +41,8 @@ export const useShareModalStore = defineStore('shareModal', () => {
         emotionCombo,
         emotionSecondary,
         image,
-        isVisible,
+        isPrimaryVisible,
+        isSecondaryVisible,
         journal,
         // Functions
         handleClose,

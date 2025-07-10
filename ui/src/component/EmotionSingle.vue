@@ -7,7 +7,7 @@
 <template>
     <div class="emotion-single">
         <span class="emoji"> {{ props.emotion.emoji }} </span>
-        <span class="text"> {{ props.emotion.text }} </span>
+        <span class="noun"> {{ props.emotion.noun }} </span>
     </div>
 </template>
 
@@ -24,7 +24,7 @@
             font-size: 2rem;
             line-height: 1;
         }
-        .text {
+        .noun {
             color: inherit;
             font-size: 0.675rem;
             font-weight: bold;

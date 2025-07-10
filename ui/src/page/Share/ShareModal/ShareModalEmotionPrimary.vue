@@ -11,7 +11,7 @@
     const shareModalStore = useShareModalStore();
 
     const handleOpenSecondaryEmotion = () => {
-        shareModalStore.emotionSecondary.isVisible = true;
+        shareModalStore.isSecondaryVisible = true;
     }
 </script>
 
@@ -19,14 +19,14 @@
     <div class="modal-emotion">
         <EmotionSingle :emotion="shareModalStore.emotion" />
         <button
-            v-if="shareModalStore.emotion?.text !== emotionNothing.text"
+            v-if="shareModalStore.emotion?.noun !== emotionNothing.noun"
             @click="handleOpenSecondaryEmotion"
             type="button"
         >
             ➕
         </button>
-        <template v-if="shareModalStore.emotionSecondary.emotion">
-            <EmotionSingle :emotion="shareModalStore.emotionSecondary.emotion" />
+        <template v-if="shareModalStore.emotionSecondary">
+            <EmotionSingle :emotion="shareModalStore.emotionSecondary" />
             <button type="button">🟰</button>
             <EmotionSingle :emotion="shareModalStore.emotionCombo" />
         </template>

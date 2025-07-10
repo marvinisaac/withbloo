@@ -20,11 +20,11 @@
             createdAtTime: (new Date(mood.createdAt))
                 .toLocaleString('en-US', dateFormatTimeOnly)
                 .replaceAll(',', ''),
-            emoji: emotionsBasic.find(e => e.text === mood.emotion)?.emoji
+            emoji: emotionsBasic.find(e => e.noun === mood.emotion)?.emoji
                 || emotionNothing.emoji,
             image: mood.image,
             journal: mood.journal,
-            verb: emotionsBasic.find(e => e.text === mood.emotion)?.verb
+            verb: emotionsBasic.find(e => e.noun === mood.emotion)?.verb
                 || emotionNothing.verb,
         }));
     });
