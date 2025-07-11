@@ -28,7 +28,7 @@
         <template v-if="shareModalStore.emotionSecondary">
             <EmotionSingle :emotion="shareModalStore.emotionSecondary" />
             <button type="button">🟰</button>
-            <EmotionSingle :emotion="shareModalStore.emotionCombo" />
+            <EmotionSingle :emotion="shareModalStore.emotionCombination" />
         </template>
         <ShareModalEmotionSecondary />
     </div>
@@ -43,9 +43,6 @@
         button {
             background: var(--color-background);
             border: none;
-        }
-        .modal-emoji {
-            font-size: 2rem;
         }
         .modal-text {
             font-weight: bolder;

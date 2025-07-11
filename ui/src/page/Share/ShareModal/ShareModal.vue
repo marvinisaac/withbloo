@@ -8,7 +8,7 @@
     const shareModalStore = useShareModalStore();
 
     const getEmotionVerb = () => {
-        return shareModalStore.emotionCombo?.verb
+        return shareModalStore.emotionCombination?.verb
             || shareModalStore.emotion.verb;
     }
 

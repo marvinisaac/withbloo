@@ -4,15 +4,32 @@
         dateFormatDateOnly,
         dateFormatTimeOnly,
         emotionsBasic,
-        emotionNothing
+        emotionNothing,
+        getCombinedEmotions,
     } from '@/constants';
     import db from '@/singleton/database';
+    import EmotionSingle from '@/component/EmotionSingle.vue';
     import VueMarkdown from 'vue-markdown-render';
 
     const all = ref([]);
+    
+    const getEmotion = (mood) => {
+        console.log(mood);
+        if (mood.emotion === emotionNothing.noun) {
+            return emotionNothing;
+        }
+        
+        const emotions = mood.emotion.split(' ');
+        if (emotions.length === 2) {
+            return getCombinedEmotions(emotions[0], emotions[1]);
+        }
+
+        return emotionsBasic.find(e => e.noun === mood.emotion);
+    }
 
     onMounted(async () => {
         const moods = await db.getRecent(999);
+
         all.value = moods.map(mood => ({
             createdAtDate: (new Date(mood.createdAt))
                 .toLocaleString('en-US', dateFormatDateOnly)
@@ -20,38 +37,42 @@
             createdAtTime: (new Date(mood.createdAt))
                 .toLocaleString('en-US', dateFormatTimeOnly)
                 .replaceAll(',', ''),
-            emoji: emotionsBasic.find(e => e.noun === mood.emotion)?.emoji
-                || emotionNothing.emoji,
+            emotion: getEmotion(mood),
             image: mood.image,
             journal: mood.journal,
-            verb: emotionsBasic.find(e => e.noun === mood.emotion)?.verb
-                || emotionNothing.verb,
         }));
+        console.log(all.value);
     });
 </script>
 
 <template>
     <div class="container-revisit">
-        <div class="mood-entry"
+        <div v-if="all.length < 1"
+            class="mood-entry"
+        >
+            <p class="date">
+                No entry yet
+            </p>
+        </div>
+        <div v-else
             v-for="(mood, index) in all"
             :key="index"
+            class="mood-entry"
         >
             <p class="date"
                 v-if="mood.createdAtDate !== all[index - 1]?.createdAtDate"
             >
                 {{ mood.createdAtDate }}
             </p>
-            <div class="details">
-                <div class="basic">
-                    <div class="emoji">
-                        <span>{{ mood.emoji }}</span>
-                    </div>
-                    <div class="date-text">
-                        <span class="created-time">{{ mood.createdAtTime }}</span>
-                        <span class="verb">{{ mood.verb }}</span>
-                    </div>
-                </div>
-                <div class="expanded">
+            <div class="mood-entry-details-container">
+                <EmotionSingle
+                    :emotion="mood.emotion"
+                    :isTextVisible="false"
+                    class="emotion-single"
+                />
+                <div class="mood-entry-details">
+                    <p class="time">{{ mood.createdAtTime }}</p>
+                    <p class="emotion">{{ mood.emotion.noun }}</p>
                     <div v-if="mood.journal"
                         class="journal"
                     >
@@ -85,40 +106,25 @@
             line-height: 3;
             text-align: center;
         }
-        .details {
+        .mood-entry-details-container {
             display: flex;
-                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
             margin: 0 auto;
             padding: 0 1rem;
-            .basic {
-                display: flex;
-                    align-items: flex-start;
-                .emoji {
-                    width: 3rem;
-                    span {
-                        display: block;
-                        font-size: 2rem;
-                        line-height: 1.25;
-                        text-align: center;
-                        width: 100%;
-                    }
-                }
-                .date-text {
-                    display: flex;
-                        flex-direction: column;
-                    width: calc(100% - 3rem);
-                    .created-time {
-                        font-size: 0.75rem;
-                        line-height: 1;
-                    }
-                    .verb {
-                        font-weight: bolder;
-                        text-transform: uppercase;
-                    }
-                }
+            .emotion-single {
+                flex-shrink: 0;
+                width: 4rem;
             }
-            .expanded {
-                padding-left: 3rem;
+            .mood-entry-details {
+                .time {
+                    font-size: 0.75rem;
+                    line-height: 1;
+                }
+                .emotion {
+                    font-weight: bolder;
+                    text-transform: uppercase;
+                }
                 .image {
                     border-radius: 0.25rem;
                     width: auto;

@@ -19,7 +19,7 @@ export const useShareModalStore = defineStore('shareModal', () => {
         emotionSecondary.value = null;
     }
 
-    const emotionCombo = computed(() => {
+    const emotionCombination = computed(() => {
         return getCombinedEmotions(
             emotion.value?.noun,
             emotionSecondary.value?.noun
@@ -38,7 +38,7 @@ export const useShareModalStore = defineStore('shareModal', () => {
     return {
         // Variables
         emotion,
-        emotionCombo,
+        emotionCombination,
         emotionSecondary,
         image,
         isPrimaryVisible,

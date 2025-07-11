@@ -1,13 +1,46 @@
 <script setup>
     import { defineProps } from 'vue';
+    import { emotionNothing } from '@/constants';
 
-    const props = defineProps(['emotion']);
+    const props = defineProps({
+        emotion: Object,
+        isTextVisible: {
+            default: true,
+            type: Boolean,
+        }
+    });
+
+    const getSingleEmotionImage = () => {
+        if (props.emotion.noun === emotionNothing.noun) {
+            return 'unsure.gif';
+        }
+        return `${props.emotion.noun}.jpg`;
+    }
 </script>
 
 <template>
     <div class="emotion-single">
-        <span class="emoji"> {{ props.emotion.emoji }} </span>
-        <span class="noun"> {{ props.emotion.noun }} </span>
+        <div v-if="props.emotion?.sources"
+            class="emotion-combination"
+        >
+            <div class="emotion-combination-first">
+                <img
+                    :alt="`${props.emotion.sources[0].noun}`"
+                    :src="`/images/${props.emotion.sources[0].noun}.jpg`"
+                />
+            </div>
+            <img
+                :alt="`${props.emotion.sources[1].noun}`"
+                :src="`/images/${props.emotion.sources[1].noun}.jpg`"
+            />
+        </div>
+        <img v-else
+            :alt="`${props.emotion.noun}`"
+            :src="`/images/${getSingleEmotionImage()}`"
+        />
+        <span v-if="props.isTextVisible" class="noun">
+            {{ props.emotion.noun }}
+        </span>
     </div>
 </template>
 
@@ -19,10 +52,40 @@
             gap: 0.5rem;
             justify-content: center;
         font-weight: bolder;
-        padding: 0.5rem 0;
-        .emoji {
-            font-size: 2rem;
-            line-height: 1;
+        img {
+            border-radius: 0.25rem;
+            display: block;
+            height: auto;
+                max-height: 5rem;
+            margin: 0 auto;
+            width: 100%;
+                max-width: 5rem;
+        }
+        .emotion-combination {
+            border-radius: 0.25rem;
+            height: auto;
+                max-height: 5rem;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+                max-width: 5rem;
+            .emotion-combination-first {
+                height: 100%;
+                overflow: hidden;
+                position: absolute;
+                    left: 0;
+                    top: 0;
+                width: 50%;
+                img {
+                    width: 200%;
+                }
+            }
+            img {
+                border-radius: 0;
+                height: 100%;
+                width: 100%;
+            }
         }
         .noun {
             color: inherit;

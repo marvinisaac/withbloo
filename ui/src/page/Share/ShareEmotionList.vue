@@ -49,7 +49,7 @@
         .choice-emotions {
             display: flex;
                 flex-wrap: wrap;
-                gap: 0.25rem;
+                gap: 1rem 0.25rem;
                 justify-content: center;
             :deep(.emotion-single) {
                 width: calc(80% / 3);

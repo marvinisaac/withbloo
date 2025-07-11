@@ -46,26 +46,24 @@ const getCombinedEmotions = (emotionA, emotionB) => {
 
     const [a, b] = [emotionA, emotionB].sort();
     return {
-        emoji: `${emotionAFull.emoji}${emotionBFull.emoji}`,
-        noun: combinations[`${a} ${b}`].noun,
-        verb: combinations[`${a} ${b}`].verb,
+        ... combinations[`${a} ${b}`],
+        sources: [
+            emotionAFull,
+            emotionBFull
+        ],
     };
 };
 
 const emotionsBasic = [
-    { emoji: '🤮', noun: 'disgust', verb: 'disgusted' },
-    { emoji: '😠', noun: 'anger', verb: 'angry' },
-    { emoji: '😁', noun: 'joy', verb: 'happy' },
-    { emoji: '☹️', noun: 'sadness', verb: 'sad' },
-    { emoji: '😨', noun: 'fear', verb: 'afraid' },
-    { emoji: '😲', noun: 'surprise', verb: 'surprised' },
+    { noun: 'disgust', verb: 'disgusted' },
+    { noun: 'anger', verb: 'angry' },
+    { noun: 'joy', verb: 'happy' },
+    { noun: 'sadness', verb: 'sad' },
+    { noun: 'fear', verb: 'afraid' },
+    { noun: 'surprise', verb: 'surprised' },
 ];
 
-const emotionNothing = {
-    emoji: '😐',
-    noun: 'unsure',
-    verb: 'unsure',
-};
+const emotionNothing = { noun: 'unsure', verb: 'unsure' };
 
 export {
     dateFormatDateOnly,
