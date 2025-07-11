@@ -21,8 +21,6 @@ const clearOlderVersion = async (url) => {
         && keyMatch[1] === baseName
         && keyMatch[2] === ext
       ) {
-        // console.log('Possible match found');
-        // console.log(keyMatch);
         console.log(`Deleting ${fullName} from cache`);
         cache.delete(key);
         return;

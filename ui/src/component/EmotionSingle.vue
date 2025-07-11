@@ -9,13 +9,6 @@
             type: Boolean,
         }
     });
-
-    const getSingleEmotionImage = () => {
-        if (props.emotion.noun === emotionNothing.noun) {
-            return 'unsure.gif';
-        }
-        return `${props.emotion.noun}.jpg`;
-    }
 </script>
 
 <template>
@@ -35,8 +28,9 @@
             />
         </div>
         <img v-else
+            :class="{'unsure': props.emotion.noun === emotionNothing.noun}"
             :alt="`${props.emotion.noun}`"
-            :src="`/images/${getSingleEmotionImage()}`"
+            :src="`/images/${props.emotion.noun}.jpg`"
         />
         <span v-if="props.isTextVisible" class="noun">
             {{ props.emotion.noun }}
@@ -60,6 +54,9 @@
             margin: 0 auto;
             width: 100%;
                 max-width: 5rem;
+            &.unsure {
+                filter: grayscale(100%);
+            }
         }
         .emotion-combination {
             border-radius: 0.25rem;
