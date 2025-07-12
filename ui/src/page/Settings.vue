@@ -1,7 +1,7 @@
 <script setup>
     import { onMounted, ref } from 'vue';
-    import db from '@/singleton/database';
     import Backup from '@/component/Backup.vue';
+    import Restore from '@/component/Restore.vue';
     
     const formatTimestamp = (t) => {
         const date = new Date(t * 1000);
@@ -13,49 +13,9 @@
         return `${year} ${month} ${day} ${hour}:${min}`;
     }
 
-    const restore = async (event) => {
-        const file = event.target.files[0];
-        if (!file) {
-            console.log('No file selected for import.');
-            alert('No file selected for import.');
-            return;
-        }
-
-        const noun = await file.noun();
-        const lines = noun.trim().split('\r\n');
-        const [header, ...rows] = lines;
-        const columns = header.split(',')
-            .map(h => h.replace(/"/g, '').trim());
-
-        const restoreCount = ref(0);
-        for (const row of rows) {
-            if (!row.trim()) continue;
-            const values = row.split(',')
-                .map(v => v.replace(/^"|"$/g, '')
-                .replace(/""/g, '"'));
-            const entry = {};
-            columns.forEach((field, index) => {
-                entry[field] = values[index];
-            });
-            const restoredId = await db.add(entry);
-            if (restoredId) {
-                restoreCount.value++;
-            } else {
-                console.error('Failed to restore entry:', entry);
-            }
-        }
-        alert(`Imported ${restoreCount.value} out of ${rows.length} entries successfully.`);
-        event.target.value = '';
-    };
-
-    const triggerRestore = () => {
-        fileInput.value.click();
-    };
-
     const buildDate = import.meta.env.VITE_BUILD_DATE;
     const buildVersion = import.meta.env.VITE_BUILD_VERSION;
     const cachedFileCount = ref(0);
-    const fileInput = ref(null);
     const storage = {
         available: ref(null),
         used: ref(null),
@@ -87,18 +47,9 @@
 
         <h2>Backup</h2>
         <div class="button-container">
-            <Backup/>
-            <button @click="triggerRestore" type="button">
-                Restore Backup
-            </button>
+            <Backup />
+            <Restore />
         </div>
-        <input
-            type="file"
-            ref="fileInput"
-            accept=".csv,text/csv"
-            style="display: none"
-            @change="restore"
-        />
 
         <h2>Debug</h2>
         <p>Cached files:
@@ -125,17 +76,18 @@
     .button-container {
         display: flex;
             gap: 1rem;
-    }
-    button {
-        background: transparent;
-        border: var(--color-border) 1px solid;
-        border-radius: 0.5rem;
-        color: inherit;
-        cursor: pointer;
-        font-size: inherit;
-        line-height: 2;
-        padding: 0 0.5rem;
-        text-align: center;
+        button,
+        :deep(button) {
+            background: transparent;
+            border: var(--color-border) 1px solid;
+            border-radius: 0.5rem;
+            color: inherit;
+            cursor: pointer;
+            font-size: inherit;
+            line-height: 2;
+            padding: 0 0.5rem;
+            text-align: center;
+        }
     }
     h1 {
         border-bottom: 1px solid var(--color-border);

@@ -1,10 +1,10 @@
 <script setup>
     import { defineEmits, ref } from 'vue';
+    import { transformToData } from '@/singleton/imageProcessor';
     import { useShareModalStore } from '@/store/shareModal';
     import ShareModalEmotionPrimary from '@/page/Share/ShareModal/ShareModalEmotionPrimary.vue';
 
     const emit = defineEmits(['save']);
-    const imageFile = ref(null);
     const shareModalStore = useShareModalStore();
 
     const getEmotionVerb = () => {
@@ -12,35 +12,10 @@
             || shareModalStore.emotion.verb;
     }
 
-    const imageSelect = (event) => {
+    const imageSelect = async (event) => {
         const file = event.target.files[0];
         if (file) {
-            imageFile.value = file;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const img = new Image();
-                img.onload = () => {
-                    const maxDimension = 720;
-                    let { width, height } = img;
-
-                    if (width > maxDimension || height > maxDimension) {
-                        const widthRatio = maxDimension / width;
-                        const heightRatio = maxDimension / height;
-                        const ratio = Math.min(widthRatio, heightRatio);
-                        width = Math.round(width * ratio);
-                        height = Math.round(height * ratio);
-                    }
-
-                    const canvas = document.createElement('canvas');
-                    canvas.width = width;
-                    canvas.height = height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, width, height);
-                    shareModalStore.image = canvas.toDataURL('image/webp', 0.8);
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
+            shareModalStore.image = await transformToData(file);
         }
     };
 
