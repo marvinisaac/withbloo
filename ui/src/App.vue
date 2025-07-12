@@ -1,12 +1,30 @@
 <script setup>
+    import { onMounted, ref } from 'vue';
+
+    const isOnline = ref(true);
     const isIosPwa = window.matchMedia('(display-mode: standalone)').matches
         && /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    const updateConnectionStatus = () => {
+        isOnline.value = navigator.onLine;
+        console.log(isOnline.value);
+    }
+
+    onMounted(async () => {
+        updateConnectionStatus();
+    })
+
+    window.addEventListener('online', updateConnectionStatus);
+    window.addEventListener('offline', updateConnectionStatus);
 </script>
 
 <template>
     <div class="app-container"
-        :class="{ pwa: isIosPwa }"
+        :class="{ pwa: isIosPwa, offline: !isOnline }"
     >
+        <div id="offline-spacer">
+            <p>Offline Mode</p>
+        </div>
         <RouterView />
         <nav id="nav-bottom">
             <ul>
@@ -30,6 +48,9 @@
     --nav-height: 3rem;
     padding: 0 0 var(--nav-height);
     width: 100%;
+    div#offline-spacer {
+        display: none;
+    }
     nav {
         background: var(--color-background);
         height: var(--nav-height);
@@ -73,9 +94,28 @@
         }
     }
 }
+.app-container.offline {
+    --offline-banner-height: 1.5rem;
+    padding-top: var(--offline-banner-height);
+    div#offline-spacer {
+        background: red;
+        color: var(--color-text);
+        display: block;
+        position: fixed;
+            left: 0;
+            top: 0;
+        text-align: center;
+        width: 100%;
+        p {
+            font-size: 0.75rem;
+            font-weight: bolder;
+            line-height: 2;
+            text-transform: uppercase;
+        }
+    }
+}
 .app-container.pwa {
     --ios-bottom: 20px;
-    padding: 0 0 var(--pwa-nav-height);
     nav#nav-bottom {
         border-bottom: 1px solid var(--color-border);
         position: fixed;

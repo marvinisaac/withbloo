@@ -14,7 +14,6 @@
     const all = ref([]);
     
     const getEmotion = (mood) => {
-        console.log(mood);
         if (mood.emotion === emotionNothing.noun) {
             return emotionNothing;
         }
@@ -41,7 +40,6 @@
             image: mood.image,
             journal: mood.journal,
         }));
-        console.log(all.value);
     });
 </script>
 
