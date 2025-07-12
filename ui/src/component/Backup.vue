@@ -6,13 +6,6 @@
     const marked = new Marked();
 
     const backup = async () => {
-        const capitalizeWords = (string) => {
-            return string
-                .split(' ')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                .join(' ');
-        }
-
         const dateBackup = new Date();
         const data = await db.getAll();
         if (!data || !data.length) {
@@ -26,11 +19,7 @@
 
         for (let i = 0; i < data.length; i++) {
             const entry = { ...data[i] };
-            entry.createdAt = (new Date(entry.createdAt)).toLocaleString();
-            entry.emotion = capitalizeWords(entry.emotion);
-            entry.journalHtml = marked.parse(entry.journal);
             entries.push(entry);
-            // Handle images
             if (entry.image && entry.image.startsWith('data:')) {
                 const imageFilename = `${entry.id}.webp`;
                 const base64 = entry.image.split(',')[1];
@@ -44,7 +33,13 @@
         zip.file('index.html', createHtml(dateBackup, entries));
 
         // Generate and trigger download of ZIP file
-        const blob = await zip.generateAsync({ type: 'blob' });
+        const blob = await zip.generateAsync({
+            type: 'blob',
+            compression: "DEFLATE",
+            compressionOptions: {
+                level: 9,
+            },
+        });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -53,6 +48,13 @@
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
+    }
+
+    const capitalizeWords = (string) => {
+        return string
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+            .join(' ');
     }
 
     const createHtml = (dateBackup, entries) => {
@@ -106,12 +108,12 @@
         entries.forEach(entry => {
             htmlEntries += `
             <div class="entry">
-                <p><b>Date:</b> ${entry.createdAt}</p>
-                <p><b>Emotion:</b> ${entry.emotion}</p>
+                <p><b>Date:</b> ${ (new Date(entry.createdAt)).toLocaleString() }</p>
+                <p><b>Emotion:</b> ${ capitalizeWords(entry.emotion) }</p>
                 ${entry.journal
                     ? `
                 <p><b>Journal:</b></p>
-                <div>${entry.journalHtml || ''}</div>`
+                <div>${ marked.parse(entry.journal) || '' }</div>`
                     : ''
                 }
                 ${entry.image
