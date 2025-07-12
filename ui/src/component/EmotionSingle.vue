@@ -42,6 +42,7 @@
     .emotion-single {
         cursor: pointer;
         display: flex;
+            align-items: center;
             flex-direction: column;
             gap: 0.5rem;
             justify-content: center;

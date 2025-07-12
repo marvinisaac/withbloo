@@ -1,9 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
-    import {
-        emotionsBasic,
-        emotionNothing,
-    } from '@/constants';
+    import { emotionNothing } from '@/constants';
     import { useShareModalStore } from '@/store/shareModal';
     import EmotionSingle from '@/component/EmotionSingle.vue';
     import ShareModalEmotionSecondary from '@/page/Share/ShareModal/ShareModalEmotionSecondary.vue';
@@ -18,16 +14,16 @@
 <template>
     <div class="modal-emotion">
         <EmotionSingle :emotion="shareModalStore.emotion" />
-        <button
+        <span
             v-if="shareModalStore.emotion?.noun !== emotionNothing.noun"
             @click="handleOpenSecondaryEmotion"
-            type="button"
+            class="emotion-add"
         >
-            ➕
-        </button>
+            +
+        </span>
         <template v-if="shareModalStore.emotionSecondary">
             <EmotionSingle :emotion="shareModalStore.emotionSecondary" />
-            <button type="button">🟰</button>
+            <span>=</span>
             <EmotionSingle :emotion="shareModalStore.emotionCombination" />
         </template>
         <ShareModalEmotionSecondary />
@@ -38,15 +34,25 @@
     .modal-emotion {
         display: flex;
             align-items: center;
-            gap: 1rem;
             justify-content: center;
-        button {
+        span {
+            color: var(--color-text);
+            display: flex;
+                justify-content: center;
+            font-size: 2rem;
+            font-weight: bolder;
+            line-height: 1;
+            width: 2rem;
+        }
+        .emotion-add {
             background: var(--color-background);
             border: none;
+            padding: 0;
         }
-        .modal-text {
-            font-weight: bolder;
-            text-transform: capitalize;
+        .emotion-single {
+            flex-shrink: 0;
+            width: auto;
+                max-width: calc((100% - 4rem) / 3);
         }
     }
 </style>

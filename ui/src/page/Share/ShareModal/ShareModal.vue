@@ -28,12 +28,12 @@
     <div @click.self="shareModalStore.handleClose"
         class="modal-backdrop" 
     >
+        <span @click="shareModalStore.handleClose"
+            class="modal-close"
+        >
+            Close
+        </span>
         <div class="modal-content">
-            <span @click="shareModalStore.handleClose"
-                class="modal-close"
-            >
-                Close
-            </span>
 
             <ShareModalEmotionPrimary />
 
@@ -83,7 +83,8 @@
     .modal-backdrop {
         background-color: rgba(0, 0, 0, 0.8);
         display: flex;
-            align-items: center;
+            align-items: flex-end;
+            flex-direction: column;
             justify-content: center;
         padding: 1rem;
         position: fixed;
@@ -92,9 +93,19 @@
             right: 0;
             top: 0;
         z-index: 2000;
+        .modal-close,
+        .preview-delete {
+            background: red;
+            border-radius: 0.5rem 0.5rem 0 0;
+            color: var(--color-heading);
+            font-size: 0.75rem;
+            line-height: 2;
+            padding: 0 0.5rem;
+            text-transform: uppercase;
+        }
         .modal-content {
             background: var(--color-background);
-            border-radius: 0.5rem;
+            border-radius: 0.5rem 0 0.5rem;
             display: flex;
                 flex-direction: column;
                 gap: 1rem;
@@ -117,19 +128,6 @@
                 text-align: center;
                 width: 50%;
             }
-            .modal-close,
-            .preview-delete {
-                background: red;
-                border-radius: 0 0.5rem 0 0;
-                color: var(--color-heading);
-                font-size: 0.75rem;
-                line-height: 2;
-                padding: 0 0.5rem;
-                position: absolute;
-                    top: 0;
-                    right: 0;
-                text-transform: uppercase;
-            }
             .modal-journal {
                 textarea {
                     border-radius: 0.5rem;
@@ -144,9 +142,13 @@
             }
             .modal-image {
                 .preview {
-                    position: relative;
+                    display: flex;
+                        align-items: flex-end;
+                        flex-direction: column;
+                        justify-content: center;
                     img {
-                        border-radius: 0.5rem;
+                        border-radius: 0.5rem 0 0.5rem;
+                        display: block;
                         width: 100%;
                     }
                 }
