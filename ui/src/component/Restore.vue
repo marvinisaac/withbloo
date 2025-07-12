@@ -7,7 +7,7 @@
     const fileInput = ref(null);
 
     const getImageData = async(zip, image) => {
-        if (image === null) {
+        if (!image) {
             return null;
         }
 
@@ -43,7 +43,7 @@
             const result = await db.add({
                 createdAt: entry.createdAt,
                 emotion: entry.emotion,
-                image: await getImageData(zip, entry.image),
+                image: await getImageData(zip, entry?.image),
                 journal: entry.journal,
             });
             if (result) restoreCount++;

@@ -19,10 +19,6 @@
 
         for (let i = 0; i < data.length; i++) {
             const entry = { ...data[i] };
-            // TODO Remove this after existing backup is updated to use "unsure"
-            if (entry.emotion === 'not sure') {
-                entry.emotion = 'unsure';
-            }
             entries.push(entry);
             if (entry.image && entry.image.startsWith('data:')) {
                 const imageFilename = `${entry.id}.webp`;
