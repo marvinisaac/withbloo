@@ -3,8 +3,16 @@ const ASSETS = [
   '/',
   '/revisit',
   '/settings',
+  '/icons/icon-144.png',
+  '/images/anger.jpg',
+  '/images/disgust.jpg',
+  '/images/fear.jpg',
+  '/images/joy.jpg',
+  '/images/sadness.jpg',
+  '/images/surprise.jpg',
+  '/images/unsure.jpg',
   '/favicon.ico',
-  '/manifest.json'
+  '/manifest.json',
 ];
 
 const clearOlderVersion = async (url) => {
