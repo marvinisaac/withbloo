@@ -1,7 +1,7 @@
 <script setup>
     import { onMounted, ref } from 'vue';
-    import Backup from '@/component/Backup.vue';
-    import Restore from '@/component/Restore.vue';
+    import Backup from '@/component/setting/Backup.vue';
+    import Restore from '@/component/setting/Restore.vue';
     
     const formatTimestamp = (t) => {
         const date = new Date(t * 1000);

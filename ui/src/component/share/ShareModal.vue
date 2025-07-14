@@ -2,7 +2,7 @@
     import { defineEmits, ref } from 'vue';
     import { transformToData } from '@/singleton/imageProcessor';
     import { useShareModalStore } from '@/store/shareModal';
-    import ShareModalEmotionPrimary from '@/page/Share/ShareModal/ShareModalEmotionPrimary.vue';
+    import ShareModalEmotionPrimary from '@/component/share/modal/ShareModalEmotionPrimary.vue';
 
     const emit = defineEmits(['save']);
     const shareModalStore = useShareModalStore();

@@ -8,7 +8,7 @@
         getCombinedEmotions,
     } from '@/constants';
     import db from '@/singleton/database';
-    import EmotionSingle from '@/component/EmotionSingle.vue';
+    import EmotionSingle from '@/component/shared/EmotionSingle.vue';
     import VueMarkdown from 'vue-markdown-render';
 
     const all = ref([]);

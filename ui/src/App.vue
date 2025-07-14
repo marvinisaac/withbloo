@@ -7,7 +7,6 @@
 
     const updateConnectionStatus = () => {
         isOnline.value = navigator.onLine;
-        console.log(isOnline.value);
     }
 
     onMounted(async () => {

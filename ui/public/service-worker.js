@@ -51,7 +51,6 @@ const tryNetworkFirst = async (request) => {
     }
     return networkResponse;
   } catch (error) {
-    console.log(`${request.url} from cache`);
     console.error(error);
     const cachedResponse = await caches.match(request);
     return cachedResponse || null;

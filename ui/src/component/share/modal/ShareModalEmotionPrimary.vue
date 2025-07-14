@@ -1,8 +1,8 @@
 <script setup>
     import { emotionNothing } from '@/constants';
     import { useShareModalStore } from '@/store/shareModal';
-    import EmotionSingle from '@/component/EmotionSingle.vue';
-    import ShareModalEmotionSecondary from '@/page/Share/ShareModal/ShareModalEmotionSecondary.vue';
+    import EmotionSingle from '@/component/shared/EmotionSingle.vue';
+    import ShareModalEmotionSecondary from '@/component/share/modal/ShareModalEmotionSecondary.vue';
 
     const shareModalStore = useShareModalStore();
 

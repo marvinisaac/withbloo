@@ -4,7 +4,7 @@
         emotionNothing,
     } from '@/constants';
     import { useShareModalStore } from '@/store/shareModal';
-    import EmotionSingle from '@/component/EmotionSingle.vue';
+    import EmotionSingle from '@/component/shared/EmotionSingle.vue';
 
     const shareModalStore = useShareModalStore();
     const emotionsBasicShuffled = emotionsBasic

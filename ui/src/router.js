@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import SettingsPage from './page/Settings.vue';
-import SharePage from './page/Share/Share.vue';
+import SharePage from './page/Share.vue';
 import RevisitPage from './page/Revisit.vue';
 
 const router = createRouter({

@@ -5,8 +5,8 @@
     } from '@/constants';
     import { useShareModalStore } from '@/store/shareModal';
     import db from '@/singleton/database';
-    import ShareEmotionList from '@/page/Share/ShareEmotionList.vue';
-    import ShareModal from '@/page/Share/ShareModal/ShareModal.vue';
+    import ShareEmotionList from '@/component/share/ShareEmotionList.vue';
+    import ShareModal from '@/component/share/ShareModal.vue';
 
     const shareModalStore = useShareModalStore();
 
