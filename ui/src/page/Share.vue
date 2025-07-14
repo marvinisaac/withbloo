@@ -35,7 +35,6 @@
         <ShareEmotionList/>
         <ShareModal v-if="shareModalStore.isPrimaryVisible"
             @save="handleModalSave"
-            @close="handleClose"
         />
     </div>
 </template>
