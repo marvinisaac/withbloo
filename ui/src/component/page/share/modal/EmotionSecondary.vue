@@ -1,6 +1,6 @@
 <script setup>
     import { useShareModalStore } from '@/store/shareModal';
-    import ShareEmotionList from '../EmotionList.vue';
+    import ShareEmotionList from '@/component/page/share/EmotionList.vue';
 
     const shareModalStore = useShareModalStore();
 </script>

@@ -5,7 +5,7 @@ dexie.version(1).stores({
     mood: '++id, createdAt',
 });
 
-const db = {
+const entry = {
     add: async (data) => {
         try {
             const duplicateCreatedAt = await dexie.mood.where('createdAt').equals(data.createdAt).first();
@@ -44,6 +44,10 @@ const db = {
             return [];
         }
     },
+};
+
+const db = {
+    entry,
 };
 
 export default db;

@@ -27,7 +27,7 @@
     }
 
     onMounted(async () => {
-        const moods = await db.getRecent(999);
+        const moods = await db.entry.getRecent(999);
 
         all.value = moods.map(mood => ({
             createdAtDate: (new Date(mood.createdAt))

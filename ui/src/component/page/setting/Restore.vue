@@ -40,7 +40,7 @@
 
         let restoreCount = 0;
         for (const entry of entries) {
-            const result = await db.add({
+            const result = await db.entry.add({
                 createdAt: entry.createdAt,
                 emotion: entry.emotion,
                 image: await getImageData(zip, entry?.image),

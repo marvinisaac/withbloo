@@ -17,7 +17,7 @@
             }
             return `${shareModalStore.emotion.noun} ${shareModalStore.emotionSecondary.noun}`;
         }
-        db.add({
+        db.entry.add({
             createdAt: (new Date()).toISOString(),
             emotion: getEmotion(),
             image: shareModalStore.image,

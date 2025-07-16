@@ -7,7 +7,7 @@
 
     const backup = async () => {
         const dateBackup = new Date();
-        const data = await db.getAll();
+        const data = await db.entry.getAll();
         if (!data || !data.length) {
             alert('No entry to backup');
             return;
