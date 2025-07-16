@@ -1,6 +1,6 @@
 <script setup>
     import { useShareModalStore } from '@/store/shareModal';
-    import ShareEmotionList from '../ShareEmotionList.vue';
+    import ShareEmotionList from '../EmotionList.vue';
 
     const shareModalStore = useShareModalStore();
 </script>
@@ -31,6 +31,7 @@
         z-index: 3000;
         .modal-content {
             background: var(--color-background);
+            border: 1px solid var(--color-border);
             border-radius: 0.5rem;
             display: flex;
                 flex-direction: column;

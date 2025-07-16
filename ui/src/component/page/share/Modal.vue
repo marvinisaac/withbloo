@@ -1,9 +1,9 @@
 <script setup>
     import { defineEmits } from 'vue';
     import { useShareModalStore } from '@/store/shareModal';
-    import ShareModalEmotionPrimary from '@/component/share/modal/ShareModalEmotionPrimary.vue';
-    import ShareModalImage from '@/component/share/modal/ShareModalImage.vue';
-    import ShareModalJournal from '@/component/share/modal/ShareModalJournal.vue';
+    import EmotionPrimary from '@/component/page/share/modal/EmotionPrimary.vue';
+    import Image from '@/component/page/share/modal/Image.vue';
+    import Journal from '@/component/page/share/modal/Journal.vue';
 
     const emit = defineEmits(['save']);
     const shareModalStore = useShareModalStore();
@@ -24,9 +24,9 @@
                     Save
                 </button>
             </div>
-            <ShareModalEmotionPrimary />
-            <ShareModalJournal />
-            <ShareModalImage />
+            <EmotionPrimary />
+            <Journal />
+            <Image />
         </div>
     </div>
 </template>

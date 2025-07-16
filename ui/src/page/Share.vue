@@ -5,8 +5,8 @@
     } from '@/constants';
     import { useShareModalStore } from '@/store/shareModal';
     import db from '@/singleton/database';
-    import ShareEmotionList from '@/component/share/ShareEmotionList.vue';
-    import ShareModal from '@/component/share/ShareModal.vue';
+    import EmotionList from '@/component/page/share/EmotionList.vue';
+    import ShareModal from '@/component/page/share/Modal.vue';
 
     const shareModalStore = useShareModalStore();
 
@@ -32,7 +32,7 @@
         <p class="share-prompt">
             What are you feeling right now?
         </p>
-        <ShareEmotionList/>
+        <EmotionList/>
         <ShareModal v-if="shareModalStore.isPrimaryVisible"
             @save="handleModalSave"
         />

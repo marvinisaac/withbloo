@@ -2,7 +2,7 @@
     import { emotionNothing } from '@/constants';
     import { useShareModalStore } from '@/store/shareModal';
     import EmotionSingle from '@/component/shared/EmotionSingle.vue';
-    import ShareModalEmotionSecondary from '@/component/share/modal/ShareModalEmotionSecondary.vue';
+    import EmotionSecondary from '@/component/page/share/modal/EmotionSecondary.vue';
 
     const shareModalStore = useShareModalStore();
 
@@ -26,7 +26,7 @@
             <span>=</span>
             <EmotionSingle :emotion="shareModalStore.emotionCombination" />
         </template>
-        <ShareModalEmotionSecondary />
+        <EmotionSecondary />
     </div>
 </template>
 
