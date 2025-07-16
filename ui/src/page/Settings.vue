@@ -1,7 +1,17 @@
 <script setup>
     import { onMounted, ref } from 'vue';
+    import db from '@/singleton/database';
     import Backup from '@/component/page/setting/Backup.vue';
     import Restore from '@/component/page/setting/Restore.vue';
+
+    const buildDate = import.meta.env.VITE_BUILD_DATE;
+    const buildVersion = import.meta.env.VITE_BUILD_VERSION;
+    const cachedFileCount = ref(0);
+    const entryCount = ref(0);
+    const storage = {
+        available: ref(null),
+        used: ref(null),
+    };
     
     const formatTimestamp = (t) => {
         const date = new Date(t * 1000);
@@ -12,14 +22,6 @@
         const min = String(date.getMinutes()).padStart(2, '0');
         return `${year} ${month} ${day} ${hour}:${min}`;
     }
-
-    const buildDate = import.meta.env.VITE_BUILD_DATE;
-    const buildVersion = import.meta.env.VITE_BUILD_VERSION;
-    const cachedFileCount = ref(0);
-    const storage = {
-        available: ref(null),
-        used: ref(null),
-    };
 
     onMounted(async () => {
         if (navigator.storage && navigator.storage.estimate) {
@@ -36,6 +38,7 @@
         const cache = await caches.open('withbloo-cache');
         const cachedKeys = await cache.keys();
         cachedFileCount.value = cachedKeys.length;
+        entryCount.value = (await db.entry.getAll()).length;
     });
 </script>
 
@@ -55,6 +58,11 @@
         <p>Cached files:
             <span>
                 {{ cachedFileCount }}
+            </span>
+        </p>
+        <p>Entries:
+            <span>
+                {{ entryCount }}
             </span>
         </p>
         <p>Storage:
