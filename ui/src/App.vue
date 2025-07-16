@@ -24,7 +24,7 @@
         <div id="offline-spacer">
             <p>Offline Mode</p>
         </div>
-        <RouterView />
+        <RouterView class="app-content-container" />
         <nav id="nav-bottom">
             <ul>
                 <li>
@@ -45,8 +45,16 @@
 <style lang="scss">
 .app-container {
     --nav-height: 3rem;
-    padding: 0 0 var(--nav-height);
+    height: 100%;
+    margin: 0 auto;
+    overflow-y: auto;;
+    position: relative;
     width: 100%;
+        max-width: 720px;
+    .app-content-container {    
+        height: auto;
+            min-height: calc(100% - 1px - var(--nav-height));
+    }
     div#offline-spacer {
         display: none;
     }
@@ -81,9 +89,10 @@
     }
     nav#nav-bottom {
         border-top: 1px solid var(--color-border);
-        position: fixed;
+        position: sticky;
             bottom: 0;
             left: 0;
+        width: 100%;
         ul {
             display: flex;
                 align-items: center;

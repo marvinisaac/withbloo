@@ -44,7 +44,6 @@
     display: flex;
         flex-direction: column;
         justify-content: center;
-    padding: 10vh 0;
     text-align: center;
     width: 100%;
     .share-prompt {
