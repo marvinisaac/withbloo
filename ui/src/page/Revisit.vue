@@ -11,8 +11,32 @@
     import EmotionSingle from '@/component/shared/EmotionSingle.vue';
     import VueMarkdown from 'vue-markdown-render';
 
-    const all = ref([]);
+    const activitiesAll = ref([]);
+    const entries = ref([]);
     
+    const getActivities = (mood) => {
+        const activities = [];
+        mood.activityIds?.forEach(activityId => {
+            activities.push(activitiesAll.value[activityId]);
+        });
+        if (activities.length > 0) {
+            console.log(activities);
+        }
+        return activities;
+    }
+
+    const getAllActivities = async () => {
+        const activities = {};
+        const activitiesAll = await db.activity.getAll();
+        activitiesAll.map(activity => {
+            activities[`${activity.id}`] = {
+                emoji: activity.emoji,
+                name: activity.name,
+            };
+        });
+        return activities;
+    }
+
     const getEmotion = (mood) => {
         if (mood.emotion === emotionNothing.noun) {
             return emotionNothing;
@@ -27,9 +51,12 @@
     }
 
     onMounted(async () => {
+        activitiesAll.value = await getAllActivities();
+        console.log(activitiesAll.value);
         const moods = await db.entry.getRecent(999);
 
-        all.value = moods.map(mood => ({
+        entries.value = moods.map(mood => ({
+            activities: getActivities(mood),
             createdAtDate: (new Date(mood.createdAt))
                 .toLocaleString('en-US', dateFormatDateOnly)
                 .replaceAll(',', ''),
@@ -45,7 +72,7 @@
 
 <template>
     <div class="container-revisit">
-        <div v-if="all.length < 1"
+        <div v-if="entries.length < 1"
             class="mood-entry"
         >
             <p class="date">
@@ -53,12 +80,12 @@
             </p>
         </div>
         <div v-else
-            v-for="(mood, index) in all"
+            v-for="(mood, index) in entries"
             :key="index"
             class="mood-entry"
         >
             <p class="date"
-                v-if="mood.createdAtDate !== all[index - 1]?.createdAtDate"
+                v-if="mood.createdAtDate !== entries[index - 1]?.createdAtDate"
             >
                 {{ mood.createdAtDate }}
             </p>
@@ -71,6 +98,17 @@
                 <div class="mood-entry-details">
                     <p class="time">{{ mood.createdAtTime }}</p>
                     <p class="emotion">{{ mood.emotion.noun }}</p>
+                    <div v-if="mood.activities.length > 0"
+                        class="activities"
+                    >
+                        <span v-for="(activity, index) in mood.activities"
+                            :key="index"
+                            class="activity"
+                        >
+                            <span>{{ activity.emoji }}</span>
+                            <span>{{ activity.name }}</span>
+                        </span>
+                    </div>
                     <div v-if="mood.journal"
                         class="journal"
                     >
@@ -122,6 +160,23 @@
                 .emotion {
                     font-weight: bolder;
                     text-transform: uppercase;
+                }
+                .activities {
+                    display: flex;
+                        flex-wrap: wrap;
+                        gap: 0.5rem;
+                    .activity {
+                        border: 1px solid var(--color-border);
+                        border-radius: 0.25rem;
+                        color: var(--color-text);
+                        font-size: 0.75rem;
+                        line-height: 1.5;
+                        padding: 0.25rem;
+                        text-transform: capitalize;
+                        span {
+                            font-weight: bolder;
+                        }
+                    }
                 }
                 .image {
                     border-radius: 0.25rem;

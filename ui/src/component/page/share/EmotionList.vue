@@ -45,7 +45,6 @@
         display: flex;
             flex-direction: column;
             gap: 1rem;
-        margin-top: 2rem;
         .choice-emotions {
             display: flex;
                 flex-wrap: wrap;

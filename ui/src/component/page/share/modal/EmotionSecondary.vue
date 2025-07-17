@@ -11,6 +11,7 @@
         class="modal-backdrop" 
     >
         <div class="modal-content">
+            <p>What is it mixed with?</p>
             <ShareEmotionList />
         </div>
     </div>
@@ -38,10 +39,11 @@
                 gap: 1rem;
             height: auto;
                 max-height: 90vh;
-            overflow-y: scroll;
+            overflow-y: auto;
             padding: 1rem;
             position: relative;
             width: 100%;
+                max-width: 720px;
         }
     }
 </style>

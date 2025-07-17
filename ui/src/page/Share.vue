@@ -1,4 +1,5 @@
 <script setup>
+    import { toRaw } from 'vue';
     import {
         emotionsBasic,
         emotionNothing,
@@ -18,6 +19,7 @@
             return `${shareModalStore.emotion.noun} ${shareModalStore.emotionSecondary.noun}`;
         }
         db.entry.add({
+            activityIds: toRaw(shareModalStore.activities),
             createdAt: (new Date()).toISOString(),
             emotion: getEmotion(),
             image: shareModalStore.image,
@@ -43,6 +45,7 @@
 .container-share {
     display: flex;
         flex-direction: column;
+        gap: 1rem;
         justify-content: center;
     text-align: center;
     width: 100%;

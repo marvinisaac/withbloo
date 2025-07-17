@@ -12,8 +12,8 @@
 <template>
     <div class="modal-journal">
         <textarea v-model="shareModalStore.journal"
-            :name="`Why are you feeling ${getEmotionVerb()}?`"
-            :placeholder="`Why are you feeling ${getEmotionVerb()}?`"
+            name="journal-text"
+            :placeholder="`Why are you feeling ${getEmotionVerb()}?\nWhat happened?`"
         >
         </textarea>
     </div>

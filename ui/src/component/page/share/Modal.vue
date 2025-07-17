@@ -1,6 +1,7 @@
 <script setup>
     import { defineEmits } from 'vue';
     import { useShareModalStore } from '@/store/shareModal';
+    import Activity from '@/component/page/share/modal/Activity.vue';
     import EmotionPrimary from '@/component/page/share/modal/EmotionPrimary.vue';
     import Image from '@/component/page/share/modal/Image.vue';
     import Journal from '@/component/page/share/modal/Journal.vue';
@@ -25,6 +26,7 @@
                 </button>
             </div>
             <EmotionPrimary />
+            <Activity />
             <Journal />
             <Image />
         </div>
@@ -35,6 +37,7 @@
     .modal-backdrop {
         background-color: rgba(0, 0, 0, 0.8);
         display: flex;
+            align-items: center;
             flex-direction: column;
             justify-content: center;
         padding: 1rem;
@@ -52,10 +55,11 @@
                 flex-direction: column;
                 gap: 1rem;
             height: 100%;
-            overflow-y: scroll;
+            overflow-y: auto;
             padding: 0 1rem 3rem;
             position: relative;
             width: 100%;
+                max-width: 720px;
             .modal-control {
                 background: var(--color-background);
                 display: flex;
